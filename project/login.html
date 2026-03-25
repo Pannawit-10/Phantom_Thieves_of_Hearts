@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-VAFAS | เข้าสู่ระบบ / สมัครสมาชิก</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS เพิ่มเติมสำหรับซ่อน/โชว์ฟอร์ม */
+        .form-hidden { display: none; }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* ตกแต่งส่วนหัวของหน้าลืมรหัสผ่าน */
+        .forgot-header { text-align: center; margin-bottom: 1.5rem; }
+        .forgot-header h3 { color: #e74c3c; margin-bottom: 0.5rem; }
+        .forgot-header p { color: #7f8c8d; font-size: 0.95rem; }
+        .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #7f8c8d; text-decoration: none; font-size: 0.95rem; }
+        .back-link:hover { color: #3498db; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🛡️ C-VAFAS</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="lab.html">Lab</a>
+            <a href="search.html">Search</a>
+            <a href="news.html">News</a>
+            <a href="login.html" class="nav-login" style="background-color: #3498db; color: white;">Login / Profile</a>
+        </nav>
+    </header>
+
+    <main class="container auth-layout">
+        
+        <div class="auth-info">
+            <h2>ร่วมเป็น "พลเมืองดีไซเบอร์"</h2>
+            <p>ระบบ C-VAFAS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
+            <ul class="benefit-list">
+                <li>✅ แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</li>
+                <li>✅ สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</li>
+                <li>✅ ติดตามสถานะเคสที่คุณเคยกดรีพอร์ตเอาไว้</li>
+                <li>✅ เข้าถึงประวัติการสแกนไฟล์ย้อนหลัง (The Lab)</li>
+            </ul>
+        </div>
+
+        <div class="auth-form-box">
+            
+            <div class="auth-toggle" id="formToggleHeader">
+                <button id="btnShowLogin" class="toggle-btn active">เข้าสู่ระบบ</button>
+                <button id="btnShowRegister" class="toggle-btn">สร้างบัญชีใหม่</button>
+            </div>
+
+            <form id="loginForm" class="fade-in" action="profile.html">
+                <div class="input-group">
+                    <label for="loginEmail">อีเมล</label>
+                    <input type="email" id="loginEmail" placeholder="example@mail.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">รหัสผ่าน</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <div class="form-actions">
+                    <label><input type="checkbox"> จดจำฉันไว้</label>
+                    <a href="#" id="linkForgotPassword" class="forgot-pwd">ลืมรหัสผ่าน?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
+            </form>
+
+            <form id="registerForm" class="form-hidden fade-in" action="profile.html">
+                <div class="input-group">
+                    <label for="regName">ชื่อ-นามสกุล (หรือนามแฝง)</label>
+                    <input type="text" id="regName" placeholder="สมชาย ส." required>
+                </div>
+                <div class="input-group">
+                    <label for="regEmail">อีเมล</label>
+                    <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="regPassword">ตั้งรหัสผ่าน</label>
+                    <input type="password" id="regPassword" placeholder="ความยาวอย่างน้อย 8 ตัวอักษร" required minlength="8">
+                </div>
+                <div class="form-actions" style="margin-bottom: 1.5rem;">
+                    <label style="color: #7f8c8d; font-size: 0.9rem;">
+                        <input type="checkbox" required> ฉันยอมรับข้อตกลงและนโยบายความเป็นส่วนตัว
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" style="background-color: #27ae60;">สมัครสมาชิกและเริ่มใช้งาน</button>
+            </form>
+
+            <form id="forgotForm" class="form-hidden fade-in" action="#">
+                <div class="forgot-header">
+                    <h3>กู้คืนรหัสผ่าน</h3>
+                    <p>กรุณากรอกอีเมลที่ใช้สมัครสมาชิก ระบบจะส่งลิงก์สำหรับตั้งรหัสผ่านใหม่ไปให้คุณ</p>
+                </div>
+                <div class="input-group">
+                    <label for="forgotEmail">อีเมล</label>
+                    <input type="email" id="forgotEmail" placeholder="example@gmail.com" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" style="background-color: #e74c3c;">ส่งลิงก์กู้คืนรหัสผ่าน</button>
+                <a href="#" id="linkBackToLogin" class="back-link">⬅️ กลับไปหน้าเข้าสู่ระบบ</a>
+            </form>
+
+        </div>
+
+    </main>
+
+    <script>
+        const btnShowLogin = document.getElementById('btnShowLogin');
+        const btnShowRegister = document.getElementById('btnShowRegister');
+        const toggleHeader = document.getElementById('formToggleHeader');
+        
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
+        
+        const linkForgotPassword = document.getElementById('linkForgotPassword');
+        const linkBackToLogin = document.getElementById('linkBackToLogin');
+
+        // ฟังก์ชันช่วยซ่อนฟอร์มทั้งหมดก่อนโชว์อันที่ต้องการ
+        function hideAllForms() {
+            loginForm.classList.add('form-hidden');
+            registerForm.classList.add('form-hidden');
+            forgotForm.classList.add('form-hidden');
+        }
+
+        // 1. กดปุ่ม "สร้างบัญชีใหม่"
+        btnShowRegister.addEventListener('click', function() {
+            btnShowLogin.classList.remove('active');
+            btnShowRegister.classList.add('active');
+            hideAllForms();
+            registerForm.classList.remove('form-hidden');
+        });
+
+        // 2. กดปุ่ม "เข้าสู่ระบบ"
+        btnShowLogin.addEventListener('click', function() {
+            btnShowRegister.classList.remove('active');
+            btnShowLogin.classList.add('active');
+            hideAllForms();
+            loginForm.classList.remove('form-hidden');
+        });
+
+        // 3. กดลิงก์ "ลืมรหัสผ่าน?"
+        linkForgotPassword.addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันไม่ให้หน้าเว็บกระตุกเลื่อนขึ้นบน
+            hideAllForms();
+            toggleHeader.classList.add('form-hidden'); // ซ่อนปุ่มสลับ Login/Register ด้านบน
+            forgotForm.classList.remove('form-hidden'); // โชว์ฟอร์มลืมรหัสผ่าน
+        });
+
+        // 4. กดลิงก์ "กลับไปหน้าเข้าสู่ระบบ"
+        linkBackToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            hideAllForms();
+            toggleHeader.classList.remove('form-hidden'); // โชว์ปุ่มสลับด้านบนกลับมา
+            loginForm.classList.remove('form-hidden'); // โชว์ฟอร์ม Login
+            
+            // รีเซ็ตปุ่ม Active ให้ชี้ไปที่ Login
+            btnShowRegister.classList.remove('active');
+            btnShowLogin.classList.add('active');
+        });
+    </script>
+
+</body>
+</html>

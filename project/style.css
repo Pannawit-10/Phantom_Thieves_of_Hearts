@@ -1,0 +1,668 @@
+/* ================= CSS พื้นฐาน ================= */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+body { 
+    background-color: #f4f7f6; 
+    color: #333; 
+    line-height: 1.6; 
+}
+
+/* ================= Navbar (ส่วนหัว) ================= */
+header { 
+    background-color: #1a252f; 
+    padding: 1rem 5%; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+}
+
+.logo { 
+    color: #fff; 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    text-decoration: none; 
+}
+
+nav a { 
+    color: #ecf0f1; 
+    text-decoration: none; 
+    margin-left: 2rem; 
+    font-size: 1rem; 
+    transition: color 0.3s; 
+}
+
+nav a:hover { 
+    color: #3498db; 
+}
+
+.nav-login { 
+    border: 1px solid #3498db; 
+    padding: 0.5rem 1rem; 
+    border-radius: 4px; 
+    color: #3498db; 
+}
+
+.nav-login:hover { 
+    background-color: #3498db; 
+    color: #fff; 
+}
+
+/* ================= Hero Section (ส่วนต้อนรับ) ================= */
+.hero { 
+    background: linear-gradient(135deg, #2c3e50, #2980b9); 
+    color: white; 
+    text-align: center; 
+    padding: 4rem 2rem; 
+    padding-bottom: 6rem; /* เพิ่มพื้นที่ด้านล่างให้การ์ดดันขึ้นมาทับได้ */
+}
+
+.hero h1 { 
+    font-size: 2.8rem; 
+    margin-bottom: 1rem; 
+}
+
+.hero p { 
+    font-size: 1.2rem; 
+    margin-bottom: 2rem; 
+    color: #bdc3c7; 
+}
+
+/* ================= เมนูหลัก (Grid Cards) ================= */
+.container { 
+    max-width: 1200px; 
+    margin: -3rem auto 2rem; /* ดันกล่องขึ้นไปทับส่วน Hero สีน้ำเงิน */
+    padding: 0 2rem; 
+    position: relative; 
+}
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 2rem; 
+}
+
+.card { 
+    background: white; 
+    padding: 2.5rem 2rem; 
+    border-radius: 10px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08); 
+    text-align: center; 
+    transition: transform 0.3s; 
+    border-top: 5px solid; /* สีของเส้นขอบบนจะถูกกำหนดโดยคลาสย่อย */
+}
+
+.card:hover { 
+    transform: translateY(-10px); 
+}
+
+.card h3 { 
+    color: #2c3e50; 
+    font-size: 1.5rem; 
+    margin-bottom: 1rem; 
+}
+
+.card p { 
+    color: #7f8c8d; 
+    margin-bottom: 2rem; 
+    font-size: 0.95rem; 
+}
+
+/* สีเฉพาะของการ์ดแต่ละใบ */
+.card-blue { border-top-color: #3498db; }
+.card-red { border-top-color: #e74c3c; }
+.card-yellow { border-top-color: #f1c40f; }
+
+/* ================= ปุ่มกด (Buttons) ================= */
+.btn { 
+    display: inline-block; 
+    padding: 0.8rem 1.5rem; 
+    background-color: #3498db; 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    transition: background 0.3s; 
+}
+
+.btn:hover { background-color: #2980b9; }
+
+.btn-red { background-color: #e74c3c; color: white; }
+.btn-red:hover { background-color: #c0392b; }
+
+.btn-yellow { background-color: #f1c40f; color: #333; }
+.btn-yellow:hover { background-color: #f39c12; }
+
+/* ================= CSS สำหรับหน้าย่อย (Page Headers) ================= */
+.page-header { 
+    text-align: center; 
+    padding: 3rem 2rem; 
+    color: white; 
+    margin-bottom: 2rem;
+}
+
+.bg-yellow { background: linear-gradient(135deg, #f39c12, #e67e22); }
+.bg-yellow h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #fff; }
+.bg-yellow p { font-size: 1.1rem; opacity: 0.9; }
+
+/* ================= News Layout (แบ่ง 2 คอลัมน์) ================= */
+.news-layout { 
+    display: grid; 
+    grid-template-columns: 2fr 1fr; /* ฝั่งซ้ายใหญ่กว่าฝั่งขวา */
+    gap: 2rem; 
+    margin-top: -1rem;
+}
+
+/* ================= การ์ดบทความข่าว (Left Column) ================= */
+.news-articles h2 { 
+    margin-bottom: 1.5rem; 
+    color: #2c3e50; 
+    border-bottom: 2px solid #ecf0f1; 
+    padding-bottom: 0.5rem; 
+}
+
+.news-card { 
+    background: white; 
+    padding: 1.5rem; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+    margin-bottom: 1.5rem; 
+    border-left: 4px solid #f1c40f; 
+    transition: box-shadow 0.3s;
+}
+
+.news-card:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.news-meta { 
+    font-size: 0.85rem; 
+    color: #7f8c8d; 
+    margin-bottom: 0.5rem; 
+}
+
+.news-card h3 { 
+    color: #2c3e50; 
+    margin-bottom: 0.8rem; 
+    font-size: 1.3rem; 
+}
+
+.news-card p { 
+    color: #555; 
+    margin-bottom: 1rem; 
+}
+
+.read-more { 
+    color: #3498db; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+.read-more:hover { text-decoration: underline; }
+
+/* ================= แถบด้านข้าง สถิติ & Live Alerts (Right Column) ================= */
+.news-sidebar h3 { 
+    margin-bottom: 1rem; 
+    color: #2c3e50; 
+    font-size: 1.2rem; 
+}
+
+.stat-box { 
+    background: white; 
+    padding: 1.5rem; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+    margin-bottom: 1.5rem; 
+}
+
+.stat-box ul { list-style: none; }
+.stat-box li { 
+    padding: 0.8rem 0; 
+    border-bottom: 1px solid #f0f0f0; 
+    display: flex; 
+    justify-content: space-between; 
+}
+.stat-box li:last-child { border-bottom: none; }
+
+.live-alerts { 
+    background: #fff; 
+    padding: 1.5rem; 
+    border-radius: 8px; 
+    border-top: 4px solid #e74c3c; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+}
+
+.alert-list { list-style: none; }
+.alert-list li { 
+    padding: 0.8rem 0; 
+    font-size: 0.9rem; 
+    border-bottom: 1px dashed #ddd; 
+    color: #333; 
+}
+.alert-list li strong { color: #e74c3c; }
+.alert-list li:last-child { border-bottom: none; }
+
+/* ================= การแสดงผลบนมือถือ (Responsive) ================= */
+@media (max-width: 768px) {
+    .news-layout { 
+        grid-template-columns: 1fr; /* ถ้าจอเล็ก ให้ยุบเหลือคอลัมน์เดียว */
+    }
+}
+
+/* ================= CSS สำหรับหน้า Lab ================= */
+.bg-blue { background: linear-gradient(135deg, #2980b9, #2c3e50); }
+.bg-blue h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #fff; }
+.bg-blue p { font-size: 1.1rem; opacity: 0.9; }
+
+.lab-layout {
+    max-width: 900px; /* จำกัดความกว้างให้กล่องอัปโหลดดูพอดีสายตา */
+    margin: -2rem auto 2rem;
+    position: relative;
+}
+
+/* กล่อง Drag & Drop */
+.dropzone-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+}
+
+.dropzone {
+    border: 3px dashed #bdc3c7;
+    border-radius: 8px;
+    padding: 4rem 2rem;
+    text-align: center;
+    background-color: #f9fbfb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropzone:hover, .dropzone.dragover {
+    border-color: #3498db;
+    background-color: #ecf6f9;
+}
+
+.dropzone-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #3498db;
+}
+
+.dropzone h2 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.dropzone p { color: #7f8c8d; }
+.file-support { font-size: 0.85rem; margin-top: 1rem; color: #95a5a6; }
+
+.security-badge {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* กล่องแสดงผลรายงาน (Forensic Report) */
+.analysis-result {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.result-header {
+    background-color: #f8f9fa;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-header h3 { color: #2c3e50; }
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+}
+.badge-danger { background-color: #e74c3c; }
+.badge-safe { background-color: #27ae60; }
+
+.result-body { padding: 2rem; }
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.data-row:last-child { border-bottom: none; }
+.data-label { color: #7f8c8d; font-weight: bold; width: 40%; }
+.data-value { color: #2c3e50; width: 60%; word-break: break-all; }
+
+.highlight-danger {
+    background-color: rgba(231, 76, 60, 0.1);
+    padding: 0.8rem;
+    border-radius: 5px;
+    border-left: 4px solid #e74c3c;
+}
+.highlight-danger .data-value { color: #c0392b; font-weight: bold; }
+
+.hash-text { font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; }
+
+.result-footer {
+    background-color: #fdf2f0;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #fadbd8;
+    color: #c0392b;
+}
+
+.result-footer button { margin-top: 1rem; width: 100%; }
+
+/* ================= CSS สำหรับหน้า Search ================= */
+.bg-red { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+.bg-red h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #fff; }
+.bg-red p { font-size: 1.1rem; opacity: 0.9; }
+
+.search-layout {
+    max-width: 850px; /* บีบให้ตรงกลางเพื่อโฟกัสสายตา */
+    margin: -2rem auto 2rem;
+    position: relative;
+}
+
+/* ช่องค้นหา (Search Box) */
+.search-container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.search-input-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.search-input-group input {
+    flex: 1;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.2rem;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-input-group input:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.2);
+}
+
+.btn-search {
+    padding: 0 2.5rem;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    background-color: #2c3e50;
+}
+
+.btn-search:hover { background-color: #1a252f; }
+
+.search-hint {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+/* กล่องผลลัพธ์การค้นหา (Threat Card) */
+.threat-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.threat-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+/* สีของระดับความเสี่ยง */
+.threat-high { background-color: #e74c3c; } /* สีแดง มิจฉาชีพ */
+.threat-med { background-color: #f39c12; } /* สีส้ม เฝ้าระวัง */
+.threat-low { background-color: #27ae60; } /* สีเขียว ปลอดภัย */
+
+.threat-status h2 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+.threat-status p { font-size: 0.95rem; opacity: 0.9; }
+
+.threat-score {
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.score-number { display: block; font-size: 2rem; font-weight: bold; line-height: 1; }
+.score-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.threat-body { padding: 2rem; }
+.font-large { font-size: 1.4rem; font-weight: bold; color: #e74c3c !important; }
+
+.highlight-warning {
+    background-color: #fdf2e9;
+    padding: 1rem;
+    border-radius: 5px;
+    border-left: 4px solid #e67e22;
+    margin-top: 1rem;
+}
+.highlight-warning .data-value { color: #d35400; }
+
+.threat-footer {
+    background-color: #f8f9fa;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* กล่องแจ้งเบาะแส (Report CTA) */
+.report-cta-box {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 2px dashed #bdc3c7;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.report-text h3 { color: #2c3e50; margin-bottom: 0.5rem; }
+.report-text p { color: #7f8c8d; max-width: 600px; }
+.btn-large { padding: 1rem 2rem; font-size: 1.1rem; }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .search-input-group { flex-direction: column; }
+    .btn-search { padding: 1.2rem; }
+    .threat-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+
+/* ================= CSS สำหรับหน้า Auth (Login/Register) ================= */
+.auth-layout {
+    display: flex;
+    gap: 3rem;
+    max-width: 900px;
+    margin: 4rem auto;
+    align-items: center;
+}
+
+.auth-info { flex: 1; }
+.auth-info h2 { font-size: 2rem; color: #2c3e50; margin-bottom: 1rem; }
+.benefit-list { list-style: none; margin-top: 1.5rem; }
+.benefit-list li { margin-bottom: 1rem; color: #555; }
+
+.auth-form-box {
+    flex: 1;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.auth-toggle {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+.toggle-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.toggle-btn.active {
+    color: #3498db;
+    font-weight: bold;
+    border-bottom: 3px solid #3498db;
+}
+
+.input-group { margin-bottom: 1.5rem; }
+.input-group label { display: block; margin-bottom: 0.5rem; color: #2c3e50; font-weight: bold; }
+.input-group input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.forgot-pwd { color: #e74c3c; text-decoration: none; }
+.btn-full { width: 100%; padding: 1rem; font-size: 1.1rem; border: none; cursor: pointer; }
+
+/* ================= CSS สำหรับหน้า Profile ================= */
+.user-menu { display: flex; align-items: center; gap: 1rem; color: white; }
+.logout-link { color: #e74c3c !important; font-size: 0.85rem; }
+
+.profile-layout { max-width: 900px; margin: 3rem auto; }
+
+.profile-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: #3498db;
+    color: white;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.profile-details { flex: 1; }
+.profile-details h2 { color: #2c3e50; }
+.profile-details p { color: #7f8c8d; }
+
+.trust-score-badge {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+}
+
+.score-title { display: block; font-size: 0.9rem; text-transform: uppercase; }
+.score-points { display: block; font-size: 2.5rem; font-weight: bold; line-height: 1; margin: 0.5rem 0; }
+.score-rank { font-size: 0.9rem; }
+
+.profile-history {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.profile-history h3 { margin-bottom: 1.5rem; color: #2c3e50; }
+
+.history-table { width: 100%; border-collapse: collapse; text-align: left; }
+.history-table th { background: #f8f9fa; padding: 1rem; color: #2c3e50; }
+.history-table td { padding: 1rem; border-bottom: 1px solid #ecf0f1; }
+
+.status-badge { padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.status-approved { background: rgba(39, 174, 96, 0.1); color: #27ae60; }
+.status-pending { background: rgba(241, 196, 15, 0.1); color: #f39c12; }
+
+.text-success { color: #27ae60; font-weight: bold; }
+.text-muted { color: #95a5a6; }
+
+@media (max-width: 768px) {
+    .auth-layout { flex-direction: column; }
+    .profile-header { flex-direction: column; text-align: center; }
+}
+
+/* ================= CSS สำหรับ Modal (หน้าต่าง Popup) ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white; padding: 2.5rem; border-radius: 10px;
+    width: 90%; max-width: 500px; position: relative;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.close-modal {
+    position: absolute; top: 1rem; right: 1.5rem;
+    font-size: 2rem; color: #7f8c8d; cursor: pointer; line-height: 1;
+}
+
+.close-modal:hover { color: #e74c3c; }

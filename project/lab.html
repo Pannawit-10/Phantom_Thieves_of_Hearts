@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-VAFAS | The Lab - ชันสูตรไฟล์</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">🛡️ C-VAFAS</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="lab.html" style="color: #3498db; font-weight: bold;">Lab</a>
+            <a href="search.html">Search</a>
+            <a href="news.html">News</a>
+            <a href="login.html" class="nav-login">Login / Profile</a>
+        </nav>
+    </header>
+
+    <section class="page-header bg-blue">
+        <h1>🔬 The Lab:วิเคราะห์ไฟล์</h1>
+        <p>ระบบจะไม่อ่านเนื้อหาภายในไฟล์ของคุณ แต่จะตรวจสอบโครงสร้าง (Magic Bytes) เพื่อหาความผิดปกติ</p>
+    </section>
+
+    <main class="container lab-layout">
+        
+        <div class="dropzone-container">
+            <div id="dropzone" class="dropzone">
+                <div class="dropzone-icon">📥</div>
+                <h2>ลากไฟล์มาวางที่นี่</h2>
+                <p>หรือคลิกเพื่อเลือกไฟล์จากเครื่องของคุณ</p>
+                <p class="file-support">รองรับไฟล์: .apk, .pdf, .exe, .zip (ขนาดไม่เกิน 50MB)</p>
+                <input type="file" id="fileInput" hidden>
+            </div>
+            
+            <div class="security-badge">
+                🔒 ปลอดภัย 100%: ไฟล์ของคุณจะไม่ถูกบันทึกหรือเปิดอ่านเนื้อหาบนเซิร์ฟเวอร์
+            </div>
+        </div>
+
+        <div class="analysis-result" id="resultCard">
+            <div class="result-header">
+                <h3>📑 รายงานผลการชันสูตร (Forensic Report)</h3>
+                <span class="badge badge-danger">ตรวจพบความเสี่ยงสูง</span>
+            </div>
+            
+            <div class="result-body">
+                <div class="data-row">
+                    <span class="data-label">ชื่อไฟล์ที่อัปโหลด:</span>
+                    <span class="data-value">หมายเรียกศาล_ด่วนที่สุด.pdf</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">นามสกุลไฟล์ที่ระบุ:</span>
+                    <span class="data-value">.pdf (Document)</span>
+                </div>
+                <div class="data-row highlight-danger">
+                    <span class="data-label">ประเภทไฟล์ที่แท้จริง (Magic Bytes):</span>
+                    <span class="data-value">.apk (Android Application)</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">รหัสดิจิทัล (SHA-256 Hash):</span>
+                    <span class="data-value hash-text">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+                </div>
+            </div>
+
+            <div class="result-footer">
+                <p><strong>⚠️ คำแนะนำจากระบบ:</strong> ไฟล์นี้มีการปลอมแปลงนามสกุลเพื่อหลอกให้ผู้ใช้ติดตั้งแอปพลิเคชันอันตราย (แอปดูดเงิน) ห้ามกดเปิดหรือติดตั้งไฟล์นี้ลงในเครื่องเด็ดขาด!</p>
+                <button class="btn btn-red">รายงานไฟล์นี้ลงฐานข้อมูลชุมชน</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="lab.js"></script>
+
+</body>
+</html>
