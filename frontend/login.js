@@ -16,40 +16,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const linkBackToLogin = document.getElementById('linkBackToLogin');
 
     function hideAllForms() {
-        loginForm.classList.add('form-hidden');
-        registerForm.classList.add('form-hidden');
-        forgotForm.classList.add('form-hidden');
+        if (loginForm) loginForm.classList.add('form-hidden');
+        if (registerForm) registerForm.classList.add('form-hidden');
+        if (forgotForm) forgotForm.classList.add('form-hidden');
     }
 
-    btnShowRegister.addEventListener('click', () => {
-        btnShowLogin.classList.remove('active');
-        btnShowRegister.classList.add('active');
-        hideAllForms();
-        registerForm.classList.remove('form-hidden');
-    });
+    if (btnShowRegister) {
+        btnShowRegister.addEventListener('click', () => {
+            if (btnShowLogin) btnShowLogin.classList.remove('active');
+            btnShowRegister.classList.add('active');
+            hideAllForms();
+            if (registerForm) registerForm.classList.remove('form-hidden');
+        });
+    }
 
-    btnShowLogin.addEventListener('click', () => {
-        btnShowRegister.classList.remove('active');
-        btnShowLogin.classList.add('active');
-        hideAllForms();
-        loginForm.classList.remove('form-hidden');
-    });
+    if (btnShowLogin) {
+        btnShowLogin.addEventListener('click', () => {
+            if (btnShowRegister) btnShowRegister.classList.remove('active');
+            btnShowLogin.classList.add('active');
+            hideAllForms();
+            if (loginForm) loginForm.classList.remove('form-hidden');
+        });
+    }
 
-    linkForgotPassword.addEventListener('click', (e) => {
-        e.preventDefault();
-        hideAllForms();
-        toggleHeader.classList.add('form-hidden');
-        forgotForm.classList.remove('form-hidden');
-    });
+    if (linkForgotPassword) {
+        linkForgotPassword.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllForms();
+            if (toggleHeader) toggleHeader.classList.add('form-hidden');
+            if (forgotForm) forgotForm.classList.remove('form-hidden');
+        });
+    }
 
-    linkBackToLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        hideAllForms();
-        toggleHeader.classList.remove('form-hidden');
-        loginForm.classList.remove('form-hidden');
-        btnShowRegister.classList.remove('active');
-        btnShowLogin.classList.add('active');
-    });
+    if (linkBackToLogin) {
+        linkBackToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllForms();
+            if (toggleHeader) toggleHeader.classList.remove('form-hidden');
+            if (loginForm) loginForm.classList.remove('form-hidden');
+            if (btnShowRegister) btnShowRegister.classList.remove('active');
+            if (btnShowLogin) btnShowLogin.classList.add('active');
+        });
+    }
 
     // ==========================================
     // 2. ระบบ API: สมัครสมาชิก (Register)
@@ -111,13 +119,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (response.ok) {
-                // 🔑 ล็อกอินสำเร็จ! เก็บข้อมูลผู้ใช้ไว้ในเครื่อง (localStorage)
+                // 🔑 ล็อกอินสำเร็จ! เก็บข้อมูลผู้ใช้ไว้ในเครื่อง
                 localStorage.setItem('cvafas_user', JSON.stringify(result.user));
                 
                 alert(`✅ ยินดีต้อนรับคุณ ${result.user.username}`);
                 
-                // พาไปหน้าแรก (Home)
-                window.location.href = 'index.html'; 
+                // 🚂 สวิตช์สลับราง! ถ้าเป็นแอดมิน ไปหน้า Admin, ถ้าเป็นคนธรรมดา ไปหน้า Home
+                if (result.user.role === 'admin') {
+                    window.location.href = 'admin.html'; 
+                } else {
+                    window.location.href = 'index.html'; 
+                }
             } else {
                 alert("❌ เข้าสู่ระบบไม่สำเร็จ: " + result.error);
             }
@@ -161,6 +173,75 @@ document.addEventListener('DOMContentLoaded', function() {
         termsModal.addEventListener('click', (e) => {
             if (e.target === termsModal) {
                 termsModal.style.display = 'none';
+            }
+        });
+    }
+    // ==========================================
+    // 5. ระบบกู้คืนรหัสผ่าน (Forgot Password)
+    // ==========================================
+    const btnForgotPwd = document.getElementById('btnForgotPwd'); // ลิงก์ 'ลืมรหัสผ่าน?' ในฟอร์มล็อกอิน
+    const backToLogin = document.getElementById('backToLogin'); // ลิงก์กลับหน้าล็อกอิน
+
+    // สลับมาหน้ากู้รหัสผ่าน
+    if (btnForgotPwd) {
+        btnForgotPwd.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('form-hidden');
+            registerForm.classList.add('form-hidden');
+            forgotForm.classList.remove('form-hidden');
+            
+            // ซ่อนปุ่ม Toggle (เข้าสู่ระบบ / สร้างบัญชี) ด้านบนด้วย
+            document.querySelector('.auth-toggle').style.display = 'none';
+        });
+    }
+
+    // สลับกลับไปหน้าเข้าสู่ระบบ
+    if (backToLogin) {
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotForm.classList.add('form-hidden');
+            loginForm.classList.remove('form-hidden');
+            document.querySelector('.auth-toggle').style.display = 'flex'; // แสดงปุ่ม Toggle กลับมา
+        });
+    }
+
+    // จัดการการกดยืนยันเปลี่ยนรหัสผ่าน
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('forgotUsername').value.trim();
+            const email = document.getElementById('forgotEmail').value.trim();
+            const newPassword = document.getElementById('forgotNewPassword').value.trim();
+            const submitBtn = forgotForm.querySelector('button[type="submit"]');
+
+            // เปลี่ยนปุ่มเป็นสถานะโหลด
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปเดตข้อมูล...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:3000/api/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, username, newPassword })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message); // แจ้งเตือนสำเร็จ
+                    forgotForm.reset(); // ล้างฟอร์ม
+                    backToLogin.click(); // สั่งให้สลับกลับไปหน้าล็อกอินอัตโนมัติ
+                } else {
+                    alert(result.error); // แจ้งเตือนเมื่อข้อมูลผิด
+                }
+            } catch (error) {
+                console.error("Error resetting password:", error);
+                alert("❌ ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
     }

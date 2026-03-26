@@ -196,7 +196,7 @@ app.post('/api/login', (req, res) => {
         }
 
         console.log(`✅ ผู้ใช้ ${user.username} เข้าสู่ระบบสำเร็จ`);
-        
+
         // ส่งข้อมูลผู้ใช้กลับไปให้หน้าเว็บ (แต่ *ห้าม* ส่งรหัสผ่านเด็ดขาด)
         res.json({ 
             success: true, 
@@ -208,6 +208,42 @@ app.post('/api/login', (req, res) => {
                 role: user.role // 📌 แนบยศกลับไปให้หน้าเว็บรู้ด้วย!
             } 
         });
+    });
+});
+// ==========================================
+// 8. 🔑 API สำหรับกู้คืน/รีเซ็ตรหัสผ่าน (Forgot Password)
+// ==========================================
+app.post('/api/reset-password', async (req, res) => {
+    const { email, username, newPassword } = req.body;
+
+    if (!email || !username || !newPassword) {
+        return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+    }
+
+    // 1. ตรวจสอบว่ามีอีเมลและชื่อผู้ใช้นี้ในระบบจริงหรือไม่
+    db.query('SELECT * FROM users WHERE email = ? AND username = ?', [email, username], async (err, results) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: "❌ ไม่พบข้อมูลบัญชีนี้ หรือ ชื่อผู้ใช้/อีเมลไม่ตรงกัน" });
+        }
+
+        const userId = results[0].id;
+
+        try {
+            // 2. เข้ารหัส (Hash) รหัสผ่านตัวใหม่ เพื่อความปลอดภัย
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+            // 3. อัปเดตรหัสผ่านใหม่ลงฐานข้อมูล
+            db.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId], (updateErr) => {
+                if (updateErr) return res.status(500).json({ error: "ไม่สามารถอัปเดตรหัสผ่านได้" });
+                
+                console.log(`🔑 เปลี่ยนรหัสผ่านสำเร็จสำหรับ User ID: ${userId}`);
+                res.json({ success: true, message: "✅ รีเซ็ตรหัสผ่านสำเร็จ! คุณสามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้เลย" });
+            });
+        } catch (hashError) {
+            res.status(500).json({ error: "เกิดข้อผิดพลาดในการเข้ารหัสผ่าน" });
+        }
     });
 });
 // ==========================================
@@ -264,6 +300,24 @@ app.post('/api/admin/update-report', (req, res) => {
         if (err) return res.status(500).json({ error: "อัปเดตไม่สำเร็จ" });
         console.log(`🛡️ Admin อัปเดตสถานะ Report ID: ${id} เป็น ${action}`);
         res.json({ success: true, message: "อัปเดตสถานะเรียบร้อย" });
+    });
+});
+// 7.3 ดึงสถิติรวมสำหรับ Admin (นับจำนวน High Risk และ Users)
+app.get('/api/admin/stats', (req, res) => {
+    // นับจำนวนข้อมูลที่แอดมินยืนยันแล้วว่าเป็นมิจฉาชีพ (high)
+    db.query("SELECT COUNT(*) AS count FROM blacklist WHERE risk_level = 'high'", (err1, results1) => {
+        if (err1) return res.status(500).json({ error: "Database error" });
+        
+        // นับจำนวนผู้ใช้งานในระบบทั้งหมด
+        db.query("SELECT COUNT(*) AS count FROM users", (err2, results2) => {
+            if (err2) return res.status(500).json({ error: "Database error" });
+            
+            res.json({ 
+                success: true, 
+                confirmedCount: results1[0].count,
+                usersCount: results2[0].count
+            });
+        });
     });
 });
 // 3. รันเซิร์ฟเวอร์
