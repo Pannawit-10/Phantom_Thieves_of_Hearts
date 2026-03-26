@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>67-AEGIS | เข้าสู่ระบบ / สมัครสมาชิก</title>
+    <title>67-AEGIS</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -12,17 +12,21 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="lab.html">Lab</a>
-            <a href="search.html">Search</a>
-            <a href="news.html">News</a>
+            <a href="index.html" style="color: #3498db; font-weight: bold;"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
             <a href="login.html" class="nav-login">Login / Profile</a>
+            <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
+                <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
+            </a>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>แพลตฟอร์มป้องกันภัยไซเบอร์</h1>
-        <p>วิเคราะห์ความเสี่ยง ตรวจสอบไฟล์อันตราย และค้นหาบัญชีม้า</p>
+        <h1 data-i18n="hero_title">ระบบประเมินช่องโหว่และแจ้งเตือนภัยคุกคามทางไซเบอร์</h1>
+        <p data-i18n="hero_desc">แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบไฟล์ต้องสงสัย ค้นหาประวัติอาชญากรรม และรับความช่วยเหลือจากเครือข่ายผู้เชี่ยวชาญ</p>
     </section>
 
     <div class="container">
@@ -48,8 +52,8 @@
 
         </div>
     </div>
-
-    <script src="home.js"></script>
+    <script src="language.js"></script>
+    <script src="index.js"></script>
     <script src="auth-check.js"></script>
 
 </body>

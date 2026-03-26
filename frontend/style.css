@@ -773,3 +773,7 @@ i.fa-solid, i.fa-regular {
 .news-container i {
     margin-right: 0;
 }
+
+.card-green { 
+    border-top-color: #27ae60; 
+}

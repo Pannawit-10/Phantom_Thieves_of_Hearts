@@ -138,39 +138,102 @@ app.post('/api/report', (req, res) => {
     });
 });
 // ==========================================
-// 4. 👤 API สมัครสมาชิก (Register)
+// 4. 👤 API สมัครสมาชิก (ระบบ OTP Verification)
 // ==========================================
-app.post('/api/register', async (req, res) => {
-    const { username, email, password } = req.body;
 
-    if (!username || !email || !password) {
+// สร้างหน่วยความจำชั่วคราวเก็บ OTP (เวลาใช้งานจริงมักใช้ Redis แต่ตอนนี้ใช้ Map ไปก่อน)
+const otpStorage = new Map();
+
+// 4.1 จังหวะที่ 1: ขอรับรหัส OTP (พร้อมระบบกรองมิจฉาชีพและเช็กข้อมูลซ้ำ)
+app.post('/api/request-otp', async (req, res) => {
+    const { username, email, password, phone } = req.body;
+
+    if (!username || !email || !password || !phone) {
         return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
     }
 
-    try {
-        // เช็กก่อนว่าอีเมลนี้เคยสมัครไปหรือยัง?
-        db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
-            if (err) return res.status(500).json({ error: "Database error" });
-            if (results.length > 0) return res.status(400).json({ error: "อีเมลนี้มีผู้ใช้งานแล้ว" });
+    // 🛡️ เกราะชั้นที่ 1: เช็กว่าเบอร์นี้ติดแบล็คลิสต์ (ฐานข้อมูลมิจฉาชีพ) หรือไม่?
+    // ตรวจสอบจากตาราง blacklist ตรงคอลัมน์ threat_data
+    db.query('SELECT * FROM blacklist WHERE threat_data = ?', [phone], (errBlacklist, resultsBlacklist) => {
+        if (errBlacklist) return res.status(500).json({ error: "Database error (Blacklist check)" });
+        
+        if (resultsBlacklist.length > 0) {
+            // ถ้าเจอเบอร์นี้ในแบล็คลิสต์ ถีบออกทันที ไม่อนุญาตให้สร้างบัญชี!
+            console.log(`🚨 ป้องกันการแฝงตัว: เบอร์มิจฉาชีพ (${phone}) พยายามสมัครสมาชิก!`);
+            return res.status(403).json({ error: "ไม่อนุญาตให้สมัคร: เบอร์โทรศัพท์นี้ประวัติไม่ดีและอยู่ในฐานข้อมูลเฝ้าระวังมิจฉาชีพ \nหากคิดว่าเป็นข้อผิดพลาดให้ติดต่อผู้พัฒนาระบบ" });
+        }
 
-            // 🔒 ทำการเข้ารหัสผ่าน (Hashing) ก่อนบันทึก!
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
+        // 🛡️ เกราะชั้นที่ 2: เช็กว่า อีเมล, ชื่อผู้ใช้ หรือ เบอร์โทร ซ้ำกับคนอื่นหรือไม่?
+        db.query('SELECT * FROM users WHERE email = ? OR username = ? OR phone = ?', [email, username, phone], (errUser, resultsUser) => {
+            if (errUser) return res.status(500).json({ error: "Database error (User check)" });
+            
+            if (resultsUser.length > 0) {
+                // หาว่าอะไรที่ซ้ำ เพื่อเตือนผู้ใช้ให้ถูกจุด
+                const duplicate = resultsUser[0];
+                if (duplicate.phone === phone) return res.status(400).json({ error: "เบอร์โทรศัพท์นี้ ถูกใช้สมัครบัญชีไปแล้ว" });
+                if (duplicate.email === email) return res.status(400).json({ error: "อีเมลนี้ มีผู้ใช้งานแล้ว" });
+                if (duplicate.username === username) return res.status(400).json({ error: "ชื่อผู้ใช้นี้ มีผู้ใช้งานแล้ว" });
+            }
 
-            // บันทึกลงฐานข้อมูล
-            const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-            db.query(sql, [username, email, hashedPassword], (insertErr) => {
-                if (insertErr) return res.status(500).json({ error: "สมัครสมาชิกไม่สำเร็จ" });
-                
-                console.log(`👤 มีผู้ใช้งานใหม่สมัครสมาชิก: ${username}`);
-                res.json({ success: true, message: "สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ" });
+            // ✅ ผ่านการตรวจสอบทุกด่าน! เข้าสู่กระบวนการสร้าง OTP
+            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // บันทึกข้อมูลรอไว้ (หมดอายุใน 5 นาที)
+            otpStorage.set(phone, {
+                otp: otpCode,
+                userData: { username, email, password, phone },
+                expires: Date.now() + (5 * 60 * 1000) 
             });
+
+            // 📱 ส่ง OTP จำลองไปที่ Terminal
+            console.log(`\n=============================================`);
+            console.log(`📡 [MOCK SMS GATEWAY] กำลังส่งข้อความ...`);
+            console.log(`ถึงเบอร์: ${phone}`);
+            console.log(`ข้อความ: รหัส OTP ของคุณคือ [ ${otpCode} ] (ห้ามบอกใคร)`);
+            console.log(`=============================================\n`);
+
+            res.json({ success: true, message: "ส่งรหัส OTP เรียบร้อยแล้ว" });
+        });
+    });
+});
+
+// 4.2 จังหวะที่ 2: ตรวจสอบ OTP และบันทึกลงฐานข้อมูลจริง
+app.post('/api/verify-otp', async (req, res) => {
+    const { phone, otp } = req.body;
+    const record = otpStorage.get(phone);
+
+    // เช็กว่ามีข้อมูลขอ OTP ไหม หรือหมดอายุหรือยัง
+    if (!record) return res.status(400).json({ error: "รหัส OTP หมดอายุหรือไม่ถูกต้อง" });
+    if (Date.now() > record.expires) {
+        otpStorage.delete(phone);
+        return res.status(400).json({ error: "รหัส OTP หมดอายุ กรุณาทำรายการใหม่" });
+    }
+    
+    // เช็กว่ารหัสตรงไหม
+    if (record.otp !== otp) {
+        return res.status(400).json({ error: "รหัส OTP ไม่ถูกต้อง" });
+    }
+
+    // ✅ OTP ถูกต้อง! นำข้อมูลไปเข้ารหัสแล้วบันทึกลงฐานข้อมูล
+    try {
+        const { username, email, password } = record.userData;
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const sql = 'INSERT INTO users (username, email, password, phone, trust_score) VALUES (?, ?, ?, ?, 0)';
+        db.query(sql, [username, email, hashedPassword, phone], (insertErr) => {
+            if (insertErr) return res.status(500).json({ error: "สร้างบัญชีไม่สำเร็จ" });
+            
+            // ลบ OTP ทิ้งหลังใช้เสร็จ (ใช้ได้ครั้งเดียว)
+            otpStorage.delete(phone); 
+            
+            console.log(`👤 บัญชีถูกยืนยันผ่าน OTP สำเร็จ: ${username}`);
+            res.json({ success: true, message: "ยืนยันเบอร์โทรศัพท์และสมัครสมาชิกสำเร็จ!" });
         });
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 });
-
 // ==========================================
 // 5. 🔑 API เข้าสู่ระบบ (Login)
 // ==========================================
@@ -320,6 +383,48 @@ app.get('/api/admin/stats', (req, res) => {
         });
     });
 });
+// ==========================================
+// 9. 🛡️ API สำหรับยืนยันตัวตนขั้นสูง (KYC Gate + Face Scan)
+// ==========================================
+app.post('/api/submit-kyc', (req, res) => {
+    // 📌 รับข้อมูลใบหน้า (faceData) มาเป็นตัวแปรแบบ let (เพื่อให้ลบค่าได้)
+    let { userId, idCard, role, faceData } = req.body;
+
+    if (!userId || !idCard || !role || !faceData) {
+        return res.status(400).json({ error: "กรุณากรอกข้อมูลและสแกนใบหน้าให้ครบถ้วน" });
+    }
+
+    // 🛡️ เช็กเลขบัตรประชาชนซ้ำ
+    db.query("SELECT id FROM users WHERE id_card = ? AND id != ?", [idCard, userId], (errCheck, resultsCheck) => {
+        if (errCheck) return res.status(500).json({ error: "Database error (ID Check)" });
+        
+        if (resultsCheck.length > 0) {
+            return res.status(400).json({ error: "ไม่อนุญาต: เลขบัตรประจำตัวประชาชนนี้ ถูกใช้ยืนยันตัวตนในระบบไปแล้ว!" });
+        }
+
+        // 🚨 สเต็ป PDPA: จำลองว่า AI สแกนหน้าเสร็จแล้ว -> สั่งล้างข้อมูลรูปภาพทิ้งทันที! ไม่เซฟลงฐานข้อมูล
+        faceData = null; 
+        console.log(`🗑️ ระบบได้ทำการล้างข้อมูลรูปภาพใบหน้า (Biometric Data) ออกจากหน่วยความจำแล้ว เพื่อความปลอดภัยตามหลัก PDPA`);
+
+        // อัปเดตเฉพาะเลขบัตรและสถานะ
+        const sql = "UPDATE users SET kyc_status = 'verified', id_card = ?, help_role = ? WHERE id = ?";
+        db.query(sql, [idCard, role, userId], (err, results) => {
+            if (err) return res.status(500).json({ error: "อัปเดตข้อมูล KYC ไม่สำเร็จ" });
+
+            db.query("SELECT id, username, role, trust_score, kyc_status, help_role FROM users WHERE id = ?", [userId], (err2, userResults) => {
+                 if (err2 || userResults.length === 0) return res.status(500).json({ error: "ดึงข้อมูลใหม่ไม่สำเร็จ" });
+                 
+                 console.log(`🛡️ ผู้ใช้ ID: ${userId} ผ่านการยืนยันตัวตนสำเร็จ!`);
+                 res.json({ 
+                     success: true, 
+                     message: "ยืนยันตัวตนสำเร็จ! (รูปภาพของคุณถูกลบออกจากระบบแล้ว)", 
+                     user: userResults[0] 
+                 });
+            });
+        });
+    });
+});
+
 // 3. รันเซิร์ฟเวอร์
 const PORT = 3000;
 app.listen(PORT, () => {

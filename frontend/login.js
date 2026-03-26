@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("C-VAFAS: Authentication module loaded.");
+    console.log("C-VAFAS: Authentication module loaded (No CAPTCHA).");
 
     // ==========================================
     // 1. ระบบ UI: สลับหน้าต่าง (Login / Register / Forgot)
@@ -60,86 +60,159 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ==========================================
-    // 2. ระบบ API: สมัครสมาชิก (Register)
+    // 2. ระบบ API: สมัครสมาชิก (ระบบ OTP)
     // ==========================================
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // ป้องกันเว็บรีเฟรช
-        const submitBtn = registerForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = "กำลังสร้างบัญชี...";
-        submitBtn.disabled = true;
+    const otpModal = document.getElementById('otpModal');
+    const btnVerifyOtp = document.getElementById('btnVerifyOtp');
+    const btnCancelOtp = document.getElementById('btnCancelOtp');
+    const otpInput = document.getElementById('otpInput');
+    const otpPhoneDisplay = document.getElementById('otpPhoneDisplay');
+    
+    // ตัวแปรเก็บเบอร์โทรที่กำลังรอ OTP
+    let pendingPhone = ""; 
 
-        const username = document.getElementById('regName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const password = document.getElementById('regPassword').value;
+    if (registerForm) {
+        // จังหวะที่ 1: กดปุ่มสมัคร เพื่อขอ OTP
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+            submitBtn.textContent = "กำลังส่งรหัส OTP...";
+            submitBtn.disabled = true;
 
-        try {
-            const response = await fetch('http://127.0.0.1:3000/api/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password })
-            });
+            const username = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone') ? document.getElementById('regPhone').value.trim() : "";
+            const password = document.getElementById('regPassword').value;
 
-            const result = await response.json();
-
-            if (response.ok) {
-                alert("🎉 " + result.message);
-                // สมัครเสร็จ สลับกลับไปหน้า Login อัตโนมัติ
-                btnShowLogin.click(); 
-                registerForm.reset();
-            } else {
-                alert("❌ สมัครไม่สำเร็จ: " + result.error);
+            // ตรวจสอบเบอร์โทรศัพท์
+            const phoneRegex = /^0\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("❌ กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (ต้องเป็นตัวเลข 10 หลัก และขึ้นต้นด้วย 0)");
+                submitBtn.textContent = "สมัครสมาชิกและเริ่มใช้งาน";
+                submitBtn.disabled = false;
+                return;
             }
-        } catch (error) {
-            alert("❌ เซิร์ฟเวอร์ไม่ตอบสนอง กรุณาตรวจสอบว่ารัน backend ไว้หรือไม่");
-        } finally {
-            submitBtn.textContent = "สมัครสมาชิกและเริ่มใช้งาน";
-            submitBtn.disabled = false;
-        }
-    });
+
+            try {
+                // ยิง API ขอ OTP แทนการสมัครทันที
+                const response = await fetch('http://127.0.0.1:3000/api/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, phone }) 
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // เปิดหน้าต่างกรอก OTP
+                    pendingPhone = phone;
+                    if (otpPhoneDisplay) otpPhoneDisplay.textContent = phone;
+                    if (otpInput) otpInput.value = ""; // ล้างช่องเก่า
+                    if (otpModal) otpModal.style.display = 'flex';
+                } else {
+                    alert("❌ ไม่สามารถส่ง OTP ได้: " + result.error);
+                }
+            } catch (error) {
+                alert("❌ เซิร์ฟเวอร์ไม่ตอบสนอง");
+            } finally {
+                submitBtn.textContent = "สมัครสมาชิกและเริ่มใช้งาน";
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // จังหวะที่ 2: กดปุ่มยืนยัน OTP
+    if (btnVerifyOtp) {
+        btnVerifyOtp.addEventListener('click', async () => {
+            const otpCode = otpInput.value.trim();
+            if (otpCode.length !== 6) {
+                alert("กรุณากรอกรหัส OTP ให้ครบ 6 หลัก");
+                return;
+            }
+
+            const originalText = btnVerifyOtp.innerHTML;
+            btnVerifyOtp.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังตรวจสอบ...';
+            btnVerifyOtp.disabled = true;
+
+            try {
+                // ยิง API ตรวจสอบ OTP เพื่อสร้างบัญชีจริง
+                const response = await fetch('http://127.0.0.1:3000/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: pendingPhone, otp: otpCode }) 
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("🎉 " + result.message);
+                    otpModal.style.display = 'none'; // ปิดกล่อง OTP
+                    if (btnShowLogin) btnShowLogin.click(); // สลับไปหน้าล็อกอิน
+                    registerForm.reset();
+                } else {
+                    alert("❌ ยืนยันไม่สำเร็จ: " + result.error);
+                    otpInput.value = ""; // เคลียร์ช่องให้พิมพ์ใหม่
+                }
+            } catch (error) {
+                alert("❌ เซิร์ฟเวอร์ไม่ตอบสนอง");
+            } finally {
+                btnVerifyOtp.innerHTML = originalText;
+                btnVerifyOtp.disabled = false;
+            }
+        });
+    }
+
+    // ปิดกล่อง OTP ถ้ายกเลิก
+    if (btnCancelOtp) {
+        btnCancelOtp.addEventListener('click', () => {
+            if (otpModal) otpModal.style.display = 'none';
+        });
+    }
 
     // ==========================================
     // 3. ระบบ API: เข้าสู่ระบบ (Login)
     // ==========================================
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
-        submitBtn.textContent = "กำลังตรวจสอบ...";
-        submitBtn.disabled = true;
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            submitBtn.textContent = "กำลังตรวจสอบ...";
+            submitBtn.disabled = true;
 
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
 
-        try {
-            const response = await fetch('http://127.0.0.1:3000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+            try {
+                const response = await fetch('http://127.0.0.1:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            if (response.ok) {
-                // 🔑 ล็อกอินสำเร็จ! เก็บข้อมูลผู้ใช้ไว้ในเครื่อง
-                localStorage.setItem('cvafas_user', JSON.stringify(result.user));
-                
-                alert(`✅ ยินดีต้อนรับคุณ ${result.user.username}`);
-                
-                // 🚂 สวิตช์สลับราง! ถ้าเป็นแอดมิน ไปหน้า Admin, ถ้าเป็นคนธรรมดา ไปหน้า Home
-                if (result.user.role === 'admin') {
-                    window.location.href = 'admin.html'; 
+                if (response.ok) {
+                    localStorage.setItem('cvafas_user', JSON.stringify(result.user));
+                    alert(`✅ ยินดีต้อนรับคุณ ${result.user.username}`);
+                    
+                    if (result.user.role === 'admin') {
+                        window.location.href = 'admin.html'; 
+                    } else {
+                        window.location.href = 'index.html'; 
+                    }
                 } else {
-                    window.location.href = 'index.html'; 
+                    alert("❌ เข้าสู่ระบบไม่สำเร็จ: " + result.error);
                 }
-            } else {
-                alert("❌ เข้าสู่ระบบไม่สำเร็จ: " + result.error);
+            } catch (error) {
+                alert("❌ เซิร์ฟเวอร์ไม่ตอบสนอง กรุณาตรวจสอบว่ารัน backend ไว้หรือไม่");
+            } finally {
+                submitBtn.textContent = "เข้าสู่ระบบ";
+                submitBtn.disabled = false;
             }
-        } catch (error) {
-            alert("❌ เซิร์ฟเวอร์ไม่ตอบสนอง กรุณาตรวจสอบว่ารัน backend ไว้หรือไม่");
-        } finally {
-            submitBtn.textContent = "เข้าสู่ระบบ";
-            submitBtn.disabled = false;
-        }
-    });
+        });
+    }
+
     // ==========================================
     // 4. ระบบเปิด/ปิด หน้าต่างข้อตกลงความเป็นส่วนตัว
     // ==========================================
@@ -150,62 +223,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const regTermsCheckbox = document.getElementById('regTermsCheckbox');
 
     if (linkTerms && termsModal) {
-        // กดลิงก์เพื่อเปิดหน้าต่าง
         linkTerms.addEventListener('click', (e) => {
             e.preventDefault();
             termsModal.style.display = 'flex';
         });
 
-        // กดปุ่มกากบาทเพื่อปิด
         closeTerms.addEventListener('click', () => {
             termsModal.style.display = 'none';
         });
 
-        // กดยอมรับเงื่อนไข (ปิดหน้าต่าง + ติ๊กถูกที่ Checkbox ให้อัตโนมัติ)
         btnAcceptTerms.addEventListener('click', () => {
             termsModal.style.display = 'none';
             if (regTermsCheckbox) {
-                regTermsCheckbox.checked = true; // ติ๊กถูกให้อัตโนมัติ!
+                regTermsCheckbox.checked = true; 
             }
         });
 
-        // กดพื้นที่ว่างสีดำด้านนอกเพื่อปิด
         termsModal.addEventListener('click', (e) => {
             if (e.target === termsModal) {
                 termsModal.style.display = 'none';
             }
         });
     }
+
     // ==========================================
     // 5. ระบบกู้คืนรหัสผ่าน (Forgot Password)
     // ==========================================
-    const btnForgotPwd = document.getElementById('btnForgotPwd'); // ลิงก์ 'ลืมรหัสผ่าน?' ในฟอร์มล็อกอิน
-    const backToLogin = document.getElementById('backToLogin'); // ลิงก์กลับหน้าล็อกอิน
+    const btnForgotPwd = document.getElementById('btnForgotPwd'); 
+    const backToLogin = document.getElementById('backToLogin'); 
 
-    // สลับมาหน้ากู้รหัสผ่าน
     if (btnForgotPwd) {
         btnForgotPwd.addEventListener('click', (e) => {
             e.preventDefault();
-            loginForm.classList.add('form-hidden');
-            registerForm.classList.add('form-hidden');
-            forgotForm.classList.remove('form-hidden');
-            
-            // ซ่อนปุ่ม Toggle (เข้าสู่ระบบ / สร้างบัญชี) ด้านบนด้วย
-            document.querySelector('.auth-toggle').style.display = 'none';
+            if (loginForm) loginForm.classList.add('form-hidden');
+            if (registerForm) registerForm.classList.add('form-hidden');
+            if (forgotForm) forgotForm.classList.remove('form-hidden');
+            if (document.querySelector('.auth-toggle')) document.querySelector('.auth-toggle').style.display = 'none';
         });
     }
 
-    // สลับกลับไปหน้าเข้าสู่ระบบ
     if (backToLogin) {
         backToLogin.addEventListener('click', (e) => {
             e.preventDefault();
-            forgotForm.classList.add('form-hidden');
-            loginForm.classList.remove('form-hidden');
-            document.querySelector('.auth-toggle').style.display = 'flex'; // แสดงปุ่ม Toggle กลับมา
+            if (forgotForm) forgotForm.classList.add('form-hidden');
+            if (loginForm) loginForm.classList.remove('form-hidden');
+            if (document.querySelector('.auth-toggle')) document.querySelector('.auth-toggle').style.display = 'flex';
         });
     }
 
-    // จัดการการกดยืนยันเปลี่ยนรหัสผ่าน
     if (forgotForm) {
         forgotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -215,7 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const newPassword = document.getElementById('forgotNewPassword').value.trim();
             const submitBtn = forgotForm.querySelector('button[type="submit"]');
 
-            // เปลี่ยนปุ่มเป็นสถานะโหลด
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปเดตข้อมูล...';
             submitBtn.disabled = true;
@@ -230,11 +294,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert(result.message); // แจ้งเตือนสำเร็จ
-                    forgotForm.reset(); // ล้างฟอร์ม
-                    backToLogin.click(); // สั่งให้สลับกลับไปหน้าล็อกอินอัตโนมัติ
+                    alert(result.message); 
+                    forgotForm.reset(); 
+                    if (backToLogin) backToLogin.click(); 
                 } else {
-                    alert(result.error); // แจ้งเตือนเมื่อข้อมูลผิด
+                    alert(result.error); 
                 }
             } catch (error) {
                 console.error("Error resetting password:", error);

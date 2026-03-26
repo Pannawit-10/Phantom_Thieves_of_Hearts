@@ -25,10 +25,11 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="lab.html">Lab</a>
-            <a href="search.html">Search</a>
-            <a href="news.html">News</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
             <a href="login.html" class="nav-login" style="background-color: #3498db; color: white;">Login / Profile</a>
         </nav>
     </header>
@@ -37,7 +38,7 @@
         
         <div class="auth-info">
             <h2>ร่วมเป็น "พลเมืองดีไซเบอร์"</h2>
-            <p>ระบบ C-VAFAS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
+            <p>ระบบ 67-AEGIS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
             <ul class="benefit-list">
                 <li><i class="fa-solid fa-circle-check"></i> แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</li>
                 <li><i class="fa-solid fa-circle-check"></i> สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</li>
@@ -68,15 +69,19 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
             </form>
-
+            
             <form id="registerForm" class="form-hidden fade-in" action="profile.html">
                 <div class="input-group">
-                    <label for="regName">ชื่อ-นามสกุล (หรือนามแฝง)</label>
+                    <label for="regName">ชื่อ-นามสกุล</label>
                     <input type="text" id="regName" placeholder="สมชาย ส." required>
                 </div>
                 <div class="input-group">
                     <label for="regEmail">อีเมล</label>
                     <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="regPhone"><i class="fa-solid fa-phone"></i> เบอร์โทรศัพท์</label>
+                    <input type="tel" id="regPhone" placeholder="08XXXXXXXX (10 หลัก)" required maxlength="10">
                 </div>
                 <div class="input-group">
                     <label for="regPassword">ตั้งรหัสผ่าน</label>
@@ -129,10 +134,10 @@
             </h2>
             
             <div style="overflow-y: auto; padding-right: 15px; color: #555; font-size: 0.95rem; line-height: 1.6; text-align: left;">
-                <p>ยินดีต้อนรับสู่ <strong>C-VAFAS (Cyber-Vulnerability Assessment & Forensic Alert System)</strong> แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบและรายงานภัยคุกคามทางไซเบอร์</p>
+                <p>ยินดีต้อนรับสู่ <strong>67-AEGIS (Cyber-Vulnerability Assessment & Forensic Alert System)</strong> แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบและรายงานภัยคุกคามทางไซเบอร์</p>
                 <br>
                 <h4 style="color: #2c3e50; margin-bottom: 5px;">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
-                <p>ระบบจะทำการจัดเก็บข้อมูลพื้นฐานของท่าน ได้แก่ ชื่อ (หรือนามแฝง) และอีเมล เพื่อใช้ในการยืนยันตัวตนและสะสมคะแนนความน่าเชื่อถือ (Trust Score) รหัสผ่านของท่านจะถูกเข้ารหัสขั้นสูง (Hashing) ตามมาตรฐานสากลและไม่สามารถอ่านกลับเป็นข้อความปกติได้</p>
+                <p>ระบบจะทำการจัดเก็บข้อมูลพื้นฐานของท่าน ได้แก่ ชื่อ-นามสกุล อีเมล และเบอร์โทร เพื่อใช้ในการยืนยันตัวตนและสะสมคะแนนความน่าเชื่อถือ (Trust Score) รหัสผ่านของท่านจะถูกเข้ารหัสขั้นสูง (Hashing) ตามมาตรฐานสากลและไม่สามารถอ่านกลับเป็นข้อความปกติได้</p>
                 <br>
                 <h4 style="color: #2c3e50; margin-bottom: 5px;">2. นโยบายการรายงานเบาะแส (Crowdsourcing Policy)</h4>
                 <p>ผู้ใช้งานตกลงที่จะรายงานข้อมูลที่เป็นความจริงและเกิดจากการพบเห็นภัยคุกคามด้วยตนเอง <strong>ห้ามมิให้</strong> ผู้ใช้งานใช้ระบบนี้ในการกลั่นแกล้ง ใส่ร้าย หรือส่งข้อมูลอันเป็นเท็จเข้าสู่ระบบส่วนกลาง หากตรวจพบ ทีมงานขอสงวนสิทธิ์ในการระงับบัญชีและลบข้อมูลดังกล่าวทันที</p>
@@ -141,11 +146,30 @@
                 <p>ข้อมูลเบาะแส (เช่น บัญชีม้า, เบอร์โทรศัพท์มิจฉาชีพ, ลิงก์อันตราย) ที่ท่านรายงาน จะถูกเปิดเผยสู่สาธารณะเพื่อให้ผู้ใช้งานท่านอื่นสามารถค้นหาและเฝ้าระวังได้ เพื่อประโยชน์ในการป้องกันภัยอาชญากรรมทางเทคโนโลยีของประเทศ</p>
                 <br>
                 <h4 style="color: #2c3e50; margin-bottom: 5px;">4. ข้อจำกัดความรับผิดชอบ (Disclaimer)</h4>
-                <p>ผลการตรวจสอบไฟล์ในห้องปฏิบัติการ (The Lab) และข้อมูลในฐานข้อมูลชุมชน เป็นการประเมินความเสี่ยงเบื้องต้นเพื่อการเฝ้าระวังเท่านั้น แพลตฟอร์ม C-VAFAS จะไม่รับผิดชอบต่อความเสียหายใดๆ ที่เกิดขึ้นจากการตัดสินใจหรือการทำธุรกรรมของผู้ใช้งาน</p>
+                <p>ผลการตรวจสอบไฟล์ในห้องปฏิบัติการ (The Lab) และข้อมูลในฐานข้อมูลชุมชน เป็นการประเมินความเสี่ยงเบื้องต้นเพื่อการเฝ้าระวังเท่านั้น แพลตฟอร์ม 67-AEGIS จะไม่รับผิดชอบต่อความเสียหายใดๆ ที่เกิดขึ้นจากการตัดสินใจหรือการทำธุรกรรมของผู้ใช้งาน</p>
             </div>
             
             <button id="btnAcceptTerms" class="btn" style="margin-top: 20px; width: 100%; background-color: #27ae60; border: none; padding: 12px; font-size: 1.1rem; cursor: pointer;">
                 <i class="fa-solid fa-check"></i> ฉันเข้าใจและยอมรับเงื่อนไขทั้งหมด
+            </button>
+        </div>
+    </div>
+    <div id="otpModal" class="modal-overlay" style="display: none; z-index: 2000;">
+        <div class="modal-content" style="text-align: center; max-width: 400px;">
+            <h2 style="color: #2c3e50; margin-bottom: 10px;"><i class="fa-solid fa-mobile-screen-button" style="color: #3498db;"></i> ยืนยันรหัส OTP</h2>
+            <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 20px;">
+                ระบบได้ส่งรหัส 6 หลักไปยังเบอร์ <strong id="otpPhoneDisplay" style="color: #2c3e50;">08X-XXX-XXXX</strong><br>
+            </p>
+            
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="otpInput" maxlength="6" placeholder="------" style="font-size: 2.5rem; letter-spacing: 10px; text-align: center; width: 100%; padding: 10px; border: 2px solid #bdc3c7; border-radius: 8px; outline: none;">
+            </div>
+            
+            <button id="btnVerifyOtp" class="btn btn-full" style="background-color: #3498db; font-size: 1.1rem;">
+                <i class="fa-solid fa-check-circle"></i> ยืนยันตัวตน
+            </button>
+            <button id="btnCancelOtp" style="background: transparent; color: #e74c3c; border: none; margin-top: 15px; cursor: pointer; text-decoration: underline;">
+                ยกเลิกการสมัคร
             </button>
         </div>
     </div>
