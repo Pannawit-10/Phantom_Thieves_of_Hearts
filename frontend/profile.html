@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >C-VAFAS | โปรไฟล์ของฉัน</title>
+    <title>67-AEGIS | User Profile</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -12,12 +12,16 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
-            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
-            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
-            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
-            <a href="login.html" class="nav-login">Login / Profile</a> 
+            <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">หน้าหลัก</span></a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-i18n="nav_lab">ห้องปฏิบัติการ</span></a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="nav_search">ตรวจสอบและแจ้งเบาะแส</span></a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> <span data-i18n="nav_news">ข่าวสารความมั่นคงปลอดภัย</span></a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_help">ศูนย์ให้ความช่วยเหลือ</span></a>
+            <a href="login.html" class="nav-login"><span data-i18n="nav_login">Login / Profile</span></a> 
+            
+            <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
+                <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
+            </a>
         </nav>
     </header>
 
@@ -25,29 +29,30 @@
         <div class="profile-card">
             <div class="profile-avatar" id="userAvatar">?</div>
             
-            <h1 class="profile-name" id="userName">กำลังโหลดข้อมูล...</h1>
-            <div class="profile-badge badge-bronze" id="userBadge">🔰 พลเมืองดีไซเบอร์ระดับเริ่มต้น</div>
+            <h1 class="profile-name" id="userName" data-i18n="profile_loading">กำลังโหลดข้อมูลผู้ใช้งาน...</h1>
+            <div class="profile-badge badge-bronze" id="userBadge" data-i18n="profile_badge_bronze">🔰 สมาชิกเครือข่ายเฝ้าระวังระดับเริ่มต้น</div>
             
-            <p style="color: #7f8c8d; max-width: 500px; margin: 0 auto;">ขอบคุณที่ร่วมเป็นส่วนหนึ่งในการทำให้สังคมออนไลน์ของประเทศไทยปลอดภัยยิ่งขึ้น ข้อมูลที่คุณแจ้งเข้ามาช่วยปกป้องผู้ใช้อีกนับหมื่นคน</p>
+            <p style="color: #7f8c8d; max-width: 500px; margin: 0 auto;" data-i18n="profile_thankyou">ขอขอบพระคุณที่ร่วมเป็นส่วนหนึ่งในเครือข่ายเฝ้าระวังภัยคุกคามทางไซเบอร์ ข้อมูลของท่านมีส่วนสำคัญในการปกป้องผู้ใช้งานท่านอื่นในระบบนิเวศของ 67-AEGIS</p>
 
             <div class="profile-stats">
                 <div class="stat-item">
                     <h3 id="trustScore">0</h3>
-                    <p>Trust Score (คะแนนความน่าเชื่อถือ)</p>
+                    <p data-i18n="profile_stat_trust">ดัชนีความน่าเชื่อถือ (Trust Score)</p>
                 </div>
                 <div class="stat-item">
                     <h3 id="reportCount">0</h3>
-                    <p>เบาะแสที่แจ้งเข้าสู่ระบบส่วนกลาง</p>
+                    <p data-i18n="profile_stat_report">จำนวนรายการที่แจ้งเข้าสู่ฐานข้อมูลส่วนกลาง</p>
                 </div>
             </div>
 
             <div class="action-buttons">
-                <a href="search.html" class="btn" style="background-color: #3498db; color: white;"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาหรือแจ้งเบาะแสเพิ่ม</a>
-                <button id="btnLogoutProfile" class="btn" style="background-color: #e74c3c; color: white; border: none; cursor: pointer;"><i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ</button>
+                <a href="search.html" class="btn" style="background-color: #3498db; color: white;"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="profile_btn_search">ตรวจสอบข้อมูลหรือแจ้งเบาะแสเพิ่มเติม</span></a>
+                <button id="btnLogoutProfile" class="btn" style="background-color: #e74c3c; color: white; border: none; cursor: pointer;"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-i18n="profile_btn_logout">ออกจากระบบ</span></button>
             </div>
         </div>
     </main>
 
+    <script src="language.js"></script>
     <script src="auth-check.js"></script>
     <script src="profile.js"></script>
 </body>

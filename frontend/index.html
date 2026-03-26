@@ -12,12 +12,13 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html" style="color: #3498db; font-weight: bold;"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
-            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
-            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
-            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
-            <a href="login.html" class="nav-login">Login / Profile</a>
+            <a href="index.html" style="color: #3498db; font-weight: bold;"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">หน้าแรก</span></a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-i18n="nav_lab">The Lab</span></a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="nav_search">ค้นหาเบาะแส</span></a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> <span data-i18n="nav_news">ข่าวไซเบอร์</span></a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_help">ศูนย์ช่วยเหลือ</span></a>
+            <a href="login.html" class="nav-login"><span data-i18n="nav_login">Login / Profile</span></a>
+            
             <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
                 <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
             </a>
@@ -33,25 +34,26 @@
         <div class="grid">
             
             <div class="card card-blue">
-                <h3>The Lab</h3>
-                <p>ศูนย์ชันสูตรไฟล์ อัปโหลดและวิเคราะห์โครงสร้างไฟล์ต้องสงสัย (.apk, .pdf, .exe) เพื่อหาความผิดปกติ</p>
-                <a href="lab.html" class="btn">เข้าสู่ห้องแล็บ</a>
+                <h3 data-i18n="card_lab_title">The Lab</h3>
+                <p data-i18n="card_lab_body">ศูนย์ชันสูตรไฟล์ อัปโหลดและวิเคราะห์โครงสร้างไฟล์ต้องสงสัย (.apk, .pdf, .exe) เพื่อหาความผิดปกติ</p>
+                <a href="lab.html" class="btn"><span data-i18n="btn_enter_lab">เข้าสู่ห้องแล็บ</span></a>
             </div>
 
             <div class="card card-red">
-                <h3>Search & Report</h3>
-                <p>ตรวจสอบประวัติมิจฉาชีพ บัญชีม้า หรือแจ้งเบาะแสคนโกงเข้าสู่ระบบฐานข้อมูลส่วนกลาง</p>
-                <a href="search.html" class="btn btn-red">ค้นหา / แจ้งเบาะแส</a>
+                <h3 data-i18n="card_search_title">Search & Report</h3>
+                <p data-i18n="card_search_body">ตรวจสอบประวัติมิจฉาชีพ บัญชีม้า หรือแจ้งเบาะแสคนโกงเข้าสู่ระบบฐานข้อมูลส่วนกลาง</p>
+                <a href="search.html" class="btn btn-red"><span data-i18n="btn_search_report">ค้นหา / แจ้งเบาะแส</span></a>
             </div>
 
             <div class="card card-yellow">
-                <h3>Community News</h3>
-                <p>กระดานข่าวสารและสถิติภัยคุกคามไซเบอร์ล่าสุดที่อัปเดตแบบ Real-time จากผู้ใช้งาน</p>
-                <a href="news.html" class="btn btn-yellow">ดูข่าวสารล่าสุด</a>
+                <h3 data-i18n="card_news_title">Community News</h3>
+                <p data-i18n="card_news_body">กระดานข่าวสารและสถิติภัยคุกคามไซเบอร์ล่าสุดที่อัปเดตแบบ Real-time จากผู้ใช้งาน</p>
+                <a href="news.html" class="btn btn-yellow"><span data-i18n="btn_view_news">ดูข่าวสารล่าสุด</span></a>
             </div>
 
         </div>
     </div>
+    
     <script src="language.js"></script>
     <script src="index.js"></script>
     <script src="auth-check.js"></script>

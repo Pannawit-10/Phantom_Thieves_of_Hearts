@@ -20,6 +20,7 @@ header {
     justify-content: space-between; 
     align-items: center; 
     box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+    white-space: nowrap; /* 📌 กฎเหล็ก: ห้ามทุกอย่างใน header ตกบรรทัด */
 }
 
 .logo { 
@@ -29,12 +30,21 @@ header {
     text-decoration: none; 
 }
 
+/* 📌 สร้างกล่อง Flex ให้ Nav เพื่อจัดระเบียบปุ่มเมนูทั้งหมด */
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav a { 
     color: #ecf0f1; 
     text-decoration: none; 
-    margin-left: 2rem; 
-    font-size: 1rem; 
+    margin-left: 1.5rem; /* ปรับลดระยะห่างลงนิดนึงให้ลงตัวขึ้น */
+    font-size: 0.95rem; /* ปรับฟอนต์ให้กะทัดรัดเหมาะกับระบบ Enterprise */
     transition: color 0.3s; 
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* เว้นระยะระหว่างไอคอนกับตัวหนังสือ */
 }
 
 nav a:hover { 
@@ -46,13 +56,13 @@ nav a:hover {
     padding: 0.5rem 1rem; 
     border-radius: 4px; 
     color: #3498db; 
+    margin-left: 2rem;
 }
 
 .nav-login:hover { 
     background-color: #3498db; 
     color: #fff; 
 }
-
 /* ================= Hero Section (ส่วนต้อนรับ) ================= */
 .hero { 
     background: linear-gradient(135deg, #2c3e50, #2980b9); 

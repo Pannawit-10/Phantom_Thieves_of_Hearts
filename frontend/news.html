@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C-VAFAS | Community News</title>
+    <title>67-AEGIS | Security Bulletins</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -12,30 +12,35 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
-            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
-            <a href="news.html" style="color: #f1c04f; font-weight: bold;"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
-            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
-            <a href="login.html" class="nav-login">Login / Profile</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">หน้าหลัก</span></a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-i18n="nav_lab">ห้องปฏิบัติการ</span></a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="nav_search">ตรวจสอบและแจ้งเบาะแส</span></a>
+            <a href="news.html" style="color: #f1c04f; font-weight: bold;"><i class="fa-solid fa-satellite-dish"></i> <span data-i18n="nav_news">ข่าวสารความมั่นคงปลอดภัย</span></a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_help">ศูนย์ให้ความช่วยเหลือ</span></a>
+            <a href="login.html" class="nav-login"><span data-i18n="nav_login">Login / Profile</span></a>
+            
+            <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
+                <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
+            </a>
         </nav>
     </header>
 
     <section class="page-header bg-yellow">
-        <h1><i class="fa-regular fa-newspaper"></i> Community News & Threat Feed</h1>
-        <p>อัปเดตสถานการณ์ภัยไซเบอร์ล่าสุดและสถิติจากเครือข่ายภาคประชาชน</p>
+        <h1><i class="fa-regular fa-newspaper"></i> <span data-i18n="news_header_title">ศูนย์รวมข่าวสารและสถิติภัยคุกคาม</span></h1>
+        <p data-i18n="news_header_desc">อัปเดตสถานการณ์ความมั่นคงปลอดภัยไซเบอร์ล่าสุดและสถิติจากเครือข่ายภาคประชาชน</p>
     </section>
 
     <main class="container" style="margin-top: 3rem; margin-bottom: 3rem;">
         <div style="text-align: center; margin-bottom: 2rem;">
-            <h1 style="font-size: 2.5rem; color: #2c3e50;">🌐 Community & Cyber News</h1>
-            <p style="color: #7f8c8d;">อัปเดตข่าวสารความปลอดภัยไซเบอร์ระดับโลกแบบ Real-time (Global Threat Intelligence)</p>
+            <h1 style="font-size: 2.5rem; color: #2c3e50;" data-i18n="news_main_title">🌐 ข่าวสารความมั่นคงปลอดภัยระดับโลก</h1>
+            <p style="color: #7f8c8d;" data-i18n="news_main_desc">ติดตามข่าวสารด้านความมั่นคงปลอดภัยไซเบอร์แบบตามเวลาจริง (Global Threat Intelligence)</p>
         </div>
 
         <div id="newsContainer" class="news-grid">
             </div>
     </main>
 
+    <script src="language.js"></script>
     <script src="auth-check.js"></script>
     <script src="news.js"></script>
 

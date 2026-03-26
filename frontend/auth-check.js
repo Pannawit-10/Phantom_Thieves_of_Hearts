@@ -1,50 +1,41 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. ค้นหาปุ่ม Login ในเมนูบาร์ (อ้างอิงจากคลาส .nav-login)
-    const loginNav = document.querySelector('.nav-login');
+document.addEventListener('DOMContentLoaded', () => {
+    // ==========================================
+    // 🛡️ ระบบตรวจสอบสถานะล็อกอินและจัดการ Navbar
+    // ==========================================
+    const savedUserStr = localStorage.getItem('cvafas_user');
     
-    // ถ้าหน้านี้ไม่มีเมนูบาร์ (เช่น หน้าพัง) ให้ข้ามไปเลย
-    if (!loginNav) return; 
-
-    // 2. ตรวจสอบว่ามีการล็อกอินค้างไว้ในเครื่องหรือไม่
-    const savedUser = localStorage.getItem('cvafas_user');
-
-    if (savedUser) {
-        // 🟢 กรณีที่: ล็อกอินอยู่
-        // แปลงข้อมูลจากข้อความ JSON กลับมาเป็น Object เพื่อดึงชื่อ
-        const user = JSON.parse(savedUser);
+    if (savedUserStr) {
+        const userObj = JSON.parse(savedUserStr);
         
-        // 3. เปลี่ยนหน้าตาปุ่มบนเมนูบาร์
-        loginNav.innerHTML = `👤 สวัสดี, ${user.username} <span style="font-size: 0.8em; color: #f1c40f;">(Trust: ${user.trust_score})</span>`;
-        loginNav.href = "profile.html"; // เปลี่ยนให้ลิงก์ไปหน้า Profile
-        loginNav.style.backgroundColor = "#27ae60"; // เปลี่ยนเป็นสีเขียว
-        loginNav.style.color = "white";
+        // ค้นหาปุ่ม Login บน Navbar (ใช้ class .nav-login จะแม่นยำที่สุด)
+        const loginBtn = document.querySelector('.nav-login');
 
-        // 4. สร้างปุ่ม "ออกจากระบบ" แปะไว้ข้างๆ
-        const navBar = loginNav.parentElement; // ดึงแถบ <nav> ออกมา
-        
-        const logoutBtn = document.createElement('a');
-        logoutBtn.href = "#";
-        logoutBtn.innerHTML = "🚪 ออกจากระบบ";
-        logoutBtn.style.color = "#e74c3c";
-        logoutBtn.style.fontWeight = "bold";
-        logoutBtn.style.marginLeft = "15px";
-        
-        // 5. สั่งงานปุ่มออกจากระบบ
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if(confirm("คุณต้องการออกจากระบบ C-VAFAS ใช่หรือไม่?")) {
-                // ลบบัตรประจำตัวออกจากเครื่อง
-                localStorage.removeItem('cvafas_user'); 
-                alert("ออกจากระบบเรียบร้อยแล้ว ไว้พบกันใหม่ครับ!");
-                // รีเฟรชหน้าเว็บ 1 รอบ เพื่อให้เมนูกลับเป็นเหมือนเดิม
-                window.location.reload(); 
-            }
-        });
+        if (loginBtn) {
+            // สร้างกล่อง (div) มาครอบปุ่มชื่อและปุ่มออกระบบให้อยู่ด้วยกัน ไม่แตกแถว
+            const userMenuBox = document.createElement('div');
+            userMenuBox.style.display = 'inline-flex';
+            userMenuBox.style.alignItems = 'center';
+            userMenuBox.style.gap = '15px'; // ระยะห่างระหว่างปุ่มชื่อกับปุ่มออกระบบ
 
-        // เอาปุ่ม Logout ไปแปะในเมนูบาร์
-        navBar.appendChild(logoutBtn);
-    } else {
-        // 🔴 กรณีที่: ยังไม่ล็อกอิน (ไม่ต้องทำอะไร ปล่อยให้ปุ่มเป็น Login / Profile เหมือนเดิม)
-        console.log("C-VAFAS Auth: Guest Mode (ยังไม่เข้าสู่ระบบ)");
+            userMenuBox.innerHTML = `
+                <a href="profile.html" style="background-color: #27ae60; color: white; padding: 5px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 0.95rem; white-space: nowrap;">
+                    <i class="fa-solid fa-user-shield"></i> <span data-i18n="nav_hello">สวัสดี</span>, ${userObj.username} 
+                    <span style="color: #f1c40f; font-size: 0.85rem;">(Trust: ${userObj.trust_score || 0})</span>
+                </a>
+                <a href="#" id="btnLogout" style="color: #e74c3c; text-decoration: none; font-size: 0.95rem; font-weight: bold; white-space: nowrap;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-i18n="profile_btn_logout">ออกจากระบบ</span>
+                </a>
+            `;
+
+            // สลับร่างปุ่ม Login เดิม ให้กลายเป็นกล่อง User Menu ที่เราสร้างขึ้น
+            loginBtn.replaceWith(userMenuBox);
+
+            // สั่งให้ปุ่ม "ออกจากระบบ" ทำงานได้จริง
+            document.getElementById('btnLogout').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('cvafas_user'); // ล้างข้อมูล
+                window.location.href = 'index.html'; // เด้งกลับไปหน้าแรก
+            });
+        }
     }
 });

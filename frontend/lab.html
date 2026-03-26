@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C-VAFAS | The Lab - ชันสูตรไฟล์</title>
+    <title>67-AEGIS | The Lab</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -12,18 +12,22 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="lab.html" style="color: #3498db; font-weight: bold;"><i class="fa-solid fa-flask"></i> The Lab</a>
-            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
-            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
-            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
-            <a href="login.html" class="nav-login">Login / Profile</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">หน้าหลัก</span></a>
+            <a href="lab.html" style="color: #3498db; font-weight: bold;"><i class="fa-solid fa-flask"></i> <span data-i18n="nav_lab">ห้องปฏิบัติการ</span></a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="nav_search">ตรวจสอบและแจ้งเบาะแส</span></a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> <span data-i18n="nav_news">ข่าวสารความมั่นคงปลอดภัย</span></a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_help">ศูนย์ให้ความช่วยเหลือ</span></a>
+            <a href="login.html" class="nav-login"><span data-i18n="nav_login">Login / Profile</span></a>
+            
+            <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
+                <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
+            </a>
         </nav>
     </header>
 
     <section class="page-header bg-blue">
-        <h1>🔬 The Lab:วิเคราะห์ไฟล์</h1>
-        <p>ระบบจะไม่อ่านเนื้อหาภายในไฟล์ของคุณ แต่จะตรวจสอบโครงสร้าง (Magic Bytes) เพื่อหาความผิดปกติ</p>
+        <h1 data-i18n="lab_header_title">🔬 ห้องปฏิบัติการวิเคราะห์ไฟล์ (The Lab)</h1>
+        <p data-i18n="lab_header_desc">ระบบจะไม่เปิดอ่านเนื้อหาภายในไฟล์ของคุณ แต่จะตรวจสอบโครงสร้างระดับไบต์ (Magic Bytes) เพื่อค้นหาความผิดปกติและมัลแวร์แฝง</p>
     </section>
 
     <main class="container lab-layout">
@@ -31,50 +35,51 @@
         <div class="dropzone-container">
             <div id="dropzone" class="dropzone">
                 <div class="dropzone-icon">📥</div>
-                <h2>ลากไฟล์มาวางที่นี่</h2>
-                <p>หรือคลิกเพื่อเลือกไฟล์จากเครื่องของคุณ</p>
-                <p class="file-support">รองรับไฟล์: .apk, .pdf, .exe, .zip (ขนาดไม่เกิน 50MB)</p>
+                <h2 data-i18n="lab_dropzone_title">ลากไฟล์มาวางที่นี่</h2>
+                <p data-i18n="lab_dropzone_or">หรือคลิกเพื่อเลือกไฟล์จากอุปกรณ์ของคุณ</p>
+                <p class="file-support" data-i18n="lab_dropzone_support">รองรับไฟล์: .apk, .pdf, .exe, .zip (ขนาดไม่เกิน 50MB)</p>
                 <input type="file" id="fileInput" hidden>
             </div>
             
-            <div class="security-badge">
-                🔒 ปลอดภัย 100%: ไฟล์ของคุณจะไม่ถูกบันทึกหรือเปิดอ่านเนื้อหาบนเซิร์ฟเวอร์
+            <div class="security-badge" data-i18n="lab_security_badge">
+                🔒 ปลอดภัย 100%: ไฟล์ของคุณจะไม่ถูกบันทึกหรือถูกเปิดอ่านเนื้อหาบนเซิร์ฟเวอร์ส่วนกลาง
             </div>
         </div>
 
         <div class="analysis-result" id="resultCard">
             <div class="result-header">
-                <h3>📑 รายงานผลการตรวจสอบ (Forensic Report)</h3>
-                <span class="badge badge-danger">ตรวจพบความเสี่ยงสูง</span>
+                <h3 data-i18n="lab_result_title">📑 รายงานผลการวิเคราะห์ทางนิติวิทยาศาสตร์ดิจิทัล (Forensic Report)</h3>
+                <span class="badge badge-danger" data-i18n="lab_result_badge_danger">ตรวจพบความเสี่ยงระดับสูง</span>
             </div>
             
             <div class="result-body">
                 <div class="data-row">
-                    <span class="data-label">ชื่อไฟล์ที่อัปโหลด:</span>
+                    <span class="data-label" data-i18n="lab_label_filename">ชื่อไฟล์ที่อัปโหลด:</span>
                     <span class="data-value">หมายเรียกศาล_ด่วนที่สุด.pdf</span>
                 </div>
                 <div class="data-row">
-                    <span class="data-label">นามสกุลไฟล์ที่ระบุ:</span>
+                    <span class="data-label" data-i18n="lab_label_ext">นามสกุลไฟล์ที่ระบุ:</span>
                     <span class="data-value">.pdf (Document)</span>
                 </div>
                 <div class="data-row highlight-danger">
-                    <span class="data-label">ประเภทไฟล์ที่แท้จริง (Magic Bytes):</span>
+                    <span class="data-label" data-i18n="lab_label_magic">ประเภทไฟล์ที่แท้จริง (Magic Bytes):</span>
                     <span class="data-value">.apk (Android Application)</span>
                 </div>
                 <div class="data-row">
-                    <span class="data-label">รหัสดิจิทัล (SHA-256 Hash):</span>
+                    <span class="data-label" data-i18n="lab_label_hash">รหัสดิจิทัล (SHA-256 Hash):</span>
                     <span class="data-value hash-text">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
                 </div>
             </div>
 
             <div class="result-footer">
-                <p><strong><i class="fa-solid fa-circle-exclamation"></i> คำแนะนำจากระบบ:</strong> ไฟล์นี้มีการปลอมแปลงนามสกุลเพื่อหลอกให้ผู้ใช้ติดตั้งแอปพลิเคชันอันตราย (แอปดูดเงิน) ห้ามกดเปิดหรือติดตั้งไฟล์นี้ลงในเครื่องเด็ดขาด!</p>
-                <button id="btnReportFile" class="btn" style="background-color: #e74c3c; color: white; width: 100%;">รายงานไฟล์นี้ลงฐานข้อมูลชุมชน</button>
+                <p><strong><i class="fa-solid fa-circle-exclamation"></i> <span data-i18n="lab_advice_title">ข้อแนะนำด้านความปลอดภัย:</span></strong> <span data-i18n="lab_advice_desc">ไฟล์นี้มีการใช้นามสกุลปลอมเพื่อหลอกลวงให้ผู้ใช้งานติดตั้งแอปพลิเคชันอันตราย (มัลแวร์ขโมยข้อมูล) ห้ามเปิดหรือติดตั้งไฟล์นี้ลงในอุปกรณ์โดยเด็ดขาด!</span></p>
+                <button id="btnReportFile" class="btn" style="background-color: #e74c3c; color: white; width: 100%;"><span data-i18n="lab_btn_report">รายงานไฟล์นี้ลงสู่ฐานข้อมูลภัยคุกคาม</span></button>
             </div>
         </div>
 
     </main>
 
+    <script src="language.js"></script>
     <script src="lab.js"></script>
     <script src="auth-check.js"></script>
 

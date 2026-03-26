@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C-VAFAS | เข้าสู่ระบบ / สมัครสมาชิก</title>
+    <title>67-AEGIS | Authentication</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -25,140 +25,142 @@
     <header>
         <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> 67-AEGIS</a>
         <nav>
-            <a href="index.html"><i class="fa-solid fa-house"></i> หน้าแรก</a>
-            <a href="lab.html"><i class="fa-solid fa-flask"></i> The Lab</a>
-            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> ค้นหาเบาะแส</a>
-            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> ข่าวไซเบอร์</a>
-            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> ศูนย์ช่วยเหลือ</a>
-            <a href="login.html" class="nav-login" style="background-color: #3498db; color: white;">Login / Profile</a>
+            <a href="index.html"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">หน้าหลัก</span></a>
+            <a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-i18n="nav_lab">ห้องปฏิบัติการ</span></a>
+            <a href="search.html"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="nav_search">ตรวจสอบและแจ้งเบาะแส</span></a>
+            <a href="news.html"><i class="fa-solid fa-satellite-dish"></i> <span data-i18n="nav_news">ข่าวสารความมั่นคงปลอดภัย</span></a>
+            <a href="help.html"><i class="fa-solid fa-hand-holding-heart"></i> <span data-i18n="nav_help">ศูนย์ให้ความช่วยเหลือ</span></a>
+            <a href="login.html" class="nav-login" style="background-color: #3498db; color: white;"><span data-i18n="nav_login">Login / Profile</span></a>
+            
+            <a href="#" id="btnLangToggle" style="margin-left: 20px; border: 1px solid #ecf0f1; padding: 5px 15px; border-radius: 20px; color: #f1c40f;">
+                <i class="fa-solid fa-earth-americas"></i> <span id="langBtnText">EN</span>
+            </a>
         </nav>
     </header>
 
     <main class="container auth-layout">
         
         <div class="auth-info">
-            <h2>ร่วมเป็น "พลเมืองดีไซเบอร์"</h2>
-            <p>ระบบ 67-AEGIS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
+            <h2 data-i18n="login_info_title">ร่วมเป็น "พลเมืองดีไซเบอร์"</h2>
+            <p data-i18n="login_info_desc">ระบบ 67-AEGIS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
             <ul class="benefit-list">
-                <li><i class="fa-solid fa-circle-check"></i> แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</li>
-                <li><i class="fa-solid fa-circle-check"></i> สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</li>
-                <li><i class="fa-solid fa-circle-check"></i> ติดตามสถานะเคสที่คุณเคยกดรีพอร์ตเอาไว้</li>
-                <li><i class="fa-solid fa-circle-check"></i> เข้าถึงประวัติการสแกนไฟล์ย้อนหลัง (The Lab)</li>
+                <li><i class="fa-solid fa-circle-check"></i> <span data-i18n="login_info_list1">แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span data-i18n="login_info_list2">สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span data-i18n="login_info_list3">ติดตามสถานะเคสที่คุณเคยกดรายงานเอาไว้</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span data-i18n="login_info_list4">เข้าถึงประวัติการวิเคราะห์ไฟล์ย้อนหลัง (The Lab)</span></li>
             </ul>
         </div>
 
         <div class="auth-form-box">
             
             <div class="auth-toggle" id="formToggleHeader">
-                <button id="btnShowLogin" class="toggle-btn active">เข้าสู่ระบบ</button>
-                <button id="btnShowRegister" class="toggle-btn">สร้างบัญชีใหม่</button>
+                <button id="btnShowLogin" class="toggle-btn active" data-i18n="login_tab_login">เข้าสู่ระบบ</button>
+                <button id="btnShowRegister" class="toggle-btn" data-i18n="login_tab_register">ลงทะเบียน</button>
             </div>
 
             <form id="loginForm" class="fade-in" action="profile.html">
                 <div class="input-group">
-                    <label for="loginEmail">อีเมล</label>
-                    <input type="email" id="loginEmail" placeholder="example@mail.com" required>
+                    <label for="loginEmail" data-i18n="login_lbl_email">อีเมล</label>
+                    <input type="email" id="loginEmail" data-i18n-placeholder="login_ph_email" placeholder="example@mail.com" required>
                 </div>
                 <div class="input-group">
-                    <label for="loginPassword">รหัสผ่าน</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    <label for="loginPassword" data-i18n="login_lbl_pass">รหัสผ่าน</label>
+                    <input type="password" id="loginPassword" data-i18n-placeholder="login_ph_pass" placeholder="••••••••" required>
                 </div>
                 <div class="form-actions">
-                    <label><input type="checkbox"> จดจำฉันไว้</label>
-                    <a href="#" id="linkForgotPassword" class="forgot-pwd">ลืมรหัสผ่าน?</a>
+                    <label><input type="checkbox"> <span data-i18n="login_lbl_remember">จดจำฉันไว้ในระบบ</span></label>
+                    <a href="#" id="linkForgotPassword" class="forgot-pwd" data-i18n="login_link_forgot">ลืมรหัสผ่าน?</a>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
+                <button type="submit" class="btn btn-primary btn-full" data-i18n="login_btn_submit">เข้าสู่ระบบ</button>
             </form>
             
             <form id="registerForm" class="form-hidden fade-in" action="profile.html">
                 <div class="input-group">
-                    <label for="regName">ชื่อ-นามสกุล</label>
-                    <input type="text" id="regName" placeholder="สมชาย ส." required>
+                    <label for="regName" data-i18n="reg_lbl_name">ชื่อ-นามสกุล</label>
+                    <input type="text" id="regName" data-i18n-placeholder="reg_ph_name" placeholder="สมชาย ส." required>
                 </div>
                 <div class="input-group">
-                    <label for="regEmail">อีเมล</label>
-                    <input type="email" id="regEmail" placeholder="example@gmail.com" required>
+                    <label for="regEmail" data-i18n="login_lbl_email">อีเมล</label>
+                    <input type="email" id="regEmail" data-i18n-placeholder="login_ph_email" placeholder="example@gmail.com" required>
                 </div>
                 <div class="input-group">
-                    <label for="regPhone"><i class="fa-solid fa-phone"></i> เบอร์โทรศัพท์</label>
-                    <input type="tel" id="regPhone" placeholder="08XXXXXXXX (10 หลัก)" required maxlength="10">
+                    <label for="regPhone"><i class="fa-solid fa-phone"></i> <span data-i18n="reg_lbl_phone">เบอร์โทรศัพท์</span></label>
+                    <input type="tel" id="regPhone" data-i18n-placeholder="reg_ph_phone" placeholder="08XXXXXXXX (10 หลัก)" required maxlength="10">
                 </div>
                 <div class="input-group">
-                    <label for="regPassword">ตั้งรหัสผ่าน</label>
-                    <input type="password" id="regPassword" placeholder="ความยาวอย่างน้อย 8 ตัวอักษร" required minlength="8">
+                    <label for="regPassword" data-i18n="reg_lbl_pass">ตั้งรหัสผ่าน</label>
+                    <input type="password" id="regPassword" data-i18n-placeholder="reg_ph_pass" placeholder="ความยาวอย่างน้อย 8 ตัวอักษร" required minlength="8">
                 </div>
                 <div class="form-actions" style="margin-bottom: 1.5rem;">
                     <label style="color: #7f8c8d; font-size: 0.9rem;">
-                        <input type="checkbox" id="regTermsCheckbox" required> ฉันยอมรับ 
-                        <a href="#" id="linkTerms" style="color: #3498db; text-decoration: underline;">ข้อตกลงและนโยบายความเป็นส่วนตัว</a>
+                        <input type="checkbox" id="regTermsCheckbox" required> <span data-i18n="reg_lbl_accept">ฉันยอมรับ </span>
+                        <a href="#" id="linkTerms" style="color: #3498db; text-decoration: underline;" data-i18n="reg_link_terms">ข้อตกลงและนโยบายความเป็นส่วนตัว</a>
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full" style="background-color: #27ae60;">สมัครสมาชิกและเริ่มใช้งาน</button>
+                <button type="submit" class="btn btn-primary btn-full" style="background-color: #27ae60;" data-i18n="reg_btn_submit">สมัครสมาชิกและเริ่มใช้งาน</button>
             </form>
 
             <form id="forgotForm" class="form-hidden fade-in">
                 <div class="forgot-header">
-                    <h3><i class="fa-solid fa-key"></i> ลืมรหัสผ่านใช่หรือไม่?</h3>
-                    <p>กรุณายืนยันตัวตนด้วยชื่อผู้ใช้และอีเมลที่ลงทะเบียนไว้ เพื่อตั้งรหัสผ่านใหม่</p>
+                    <h3><i class="fa-solid fa-key"></i> <span data-i18n="forgot_title">ลืมรหัสผ่านใช่หรือไม่?</span></h3>
+                    <p data-i18n="forgot_desc">กรุณายืนยันตัวตนด้วยชื่อผู้ใช้และอีเมลที่ลงทะเบียนไว้ เพื่อตั้งรหัสผ่านใหม่</p>
                 </div>
                 
                 <div class="input-group">
-                    <label for="forgotUsername"><i class="fa-solid fa-user"></i> ชื่อผู้ใช้ (Username)</label>
-                    <input type="text" id="forgotUsername" placeholder="กรอกชื่อผู้ใช้ของคุณ" required>
+                    <label for="forgotUsername"><i class="fa-solid fa-user"></i> <span data-i18n="forgot_lbl_user">ชื่อผู้ใช้ (Username)</span></label>
+                    <input type="text" id="forgotUsername" data-i18n-placeholder="forgot_ph_user" placeholder="กรอกชื่อผู้ใช้ของคุณ" required>
                 </div>
                 <div class="input-group">
-                    <label for="forgotEmail"><i class="fa-solid fa-envelope"></i> อีเมลที่ลงทะเบียน</label>
-                    <input type="email" id="forgotEmail" placeholder="example@cvafas.com" required>
+                    <label for="forgotEmail"><i class="fa-solid fa-envelope"></i> <span data-i18n="forgot_lbl_email">อีเมลที่ลงทะเบียน</span></label>
+                    <input type="email" id="forgotEmail" data-i18n-placeholder="login_ph_email" placeholder="example@cvafas.com" required>
                 </div>
                 <div class="input-group" style="margin-top: 1.5rem; border-top: 1px dashed #bdc3c7; padding-top: 1.5rem;">
-                    <label for="forgotNewPassword"><i class="fa-solid fa-lock"></i> ตั้งรหัสผ่านใหม่</label>
-                    <input type="password" id="forgotNewPassword" placeholder="รหัสผ่านใหม่อย่างน้อย 6 ตัวอักษร" required minlength="6">
+                    <label for="forgotNewPassword"><i class="fa-solid fa-lock"></i> <span data-i18n="forgot_lbl_newpass">ตั้งรหัสผ่านใหม่</span></label>
+                    <input type="password" id="forgotNewPassword" data-i18n-placeholder="forgot_ph_newpass" placeholder="รหัสผ่านใหม่อย่างน้อย 6 ตัวอักษร" required minlength="6">
                 </div>
                 
                 <button type="submit" class="btn btn-full" style="background-color: #f39c12; margin-top: 1rem;">
-                    <i class="fa-solid fa-floppy-disk"></i> บันทึกรหัสผ่านใหม่
+                    <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="forgot_btn_submit">บันทึกรหัสผ่านใหม่</span>
                 </button>
                 
-                <a href="#" id="backToLogin" class="back-link"><i class="fa-solid fa-arrow-left"></i> กลับไปหน้าเข้าสู่ระบบ</a>
+                <a href="#" id="backToLogin" class="back-link"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="forgot_link_back">กลับไปหน้าเข้าสู่ระบบ</span></a>
             </form>
 
         </div>
-
     </main>
+
     <div id="termsModal" class="modal-overlay" style="display: none;">
         <div class="modal-content" style="max-width: 650px; max-height: 85vh; display: flex; flex-direction: column;">
             <span class="close-modal" id="closeTerms"><i class="fa-solid fa-xmark"></i></span>
             
             <h2 style="color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 15px; margin-bottom: 15px;">
-                <i class="fa-solid fa-file-shield" style="color: #3498db;"></i> ข้อตกลงและนโยบายความเป็นส่วนตัว (Privacy Policy)
+                <i class="fa-solid fa-file-shield" style="color: #3498db;"></i> <span data-i18n="terms_title">ข้อตกลงและนโยบายความเป็นส่วนตัว (Privacy Policy)</span>
             </h2>
             
             <div style="overflow-y: auto; padding-right: 15px; color: #555; font-size: 0.95rem; line-height: 1.6; text-align: left;">
-                <p>ยินดีต้อนรับสู่ <strong>67-AEGIS (Cyber-Vulnerability Assessment & Forensic Alert System)</strong> แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบและรายงานภัยคุกคามทางไซเบอร์</p>
+                <p data-i18n="terms_p1">ยินดีต้อนรับสู่ <strong>67-AEGIS (Cyber-Vulnerability Assessment & Forensic Alert System)</strong> แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบและรายงานภัยคุกคามทางไซเบอร์</p>
                 <br>
-                <h4 style="color: #2c3e50; margin-bottom: 5px;">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
-                <p>ระบบจะทำการจัดเก็บข้อมูลพื้นฐานของท่าน ได้แก่ ชื่อ-นามสกุล อีเมล และเบอร์โทร เพื่อใช้ในการยืนยันตัวตนและสะสมคะแนนความน่าเชื่อถือ (Trust Score) รหัสผ่านของท่านจะถูกเข้ารหัสขั้นสูง (Hashing) ตามมาตรฐานสากลและไม่สามารถอ่านกลับเป็นข้อความปกติได้</p>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;" data-i18n="terms_h1">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
+                <p data-i18n="terms_p2">ระบบจะทำการจัดเก็บข้อมูลพื้นฐานของท่าน ได้แก่ ชื่อ-นามสกุล อีเมล และเบอร์โทร เพื่อใช้ในการยืนยันตัวตนและสะสมคะแนนความน่าเชื่อถือ (Trust Score) รหัสผ่านของท่านจะถูกเข้ารหัสขั้นสูง (Hashing) ตามมาตรฐานสากลและไม่สามารถอ่านกลับเป็นข้อความปกติได้</p>
                 <br>
-                <h4 style="color: #2c3e50; margin-bottom: 5px;">2. นโยบายการรายงานเบาะแส (Crowdsourcing Policy)</h4>
-                <p>ผู้ใช้งานตกลงที่จะรายงานข้อมูลที่เป็นความจริงและเกิดจากการพบเห็นภัยคุกคามด้วยตนเอง <strong>ห้ามมิให้</strong> ผู้ใช้งานใช้ระบบนี้ในการกลั่นแกล้ง ใส่ร้าย หรือส่งข้อมูลอันเป็นเท็จเข้าสู่ระบบส่วนกลาง หากตรวจพบ ทีมงานขอสงวนสิทธิ์ในการระงับบัญชีและลบข้อมูลดังกล่าวทันที</p>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;" data-i18n="terms_h2">2. นโยบายการรายงานเบาะแส (Crowdsourcing Policy)</h4>
+                <p data-i18n="terms_p3">ผู้ใช้งานตกลงที่จะรายงานข้อมูลที่เป็นความจริงและเกิดจากการพบเห็นภัยคุกคามด้วยตนเอง ห้ามมิให้ผู้ใช้งานใช้ระบบนี้ในการกลั่นแกล้ง ใส่ร้าย หรือส่งข้อมูลอันเป็นเท็จเข้าสู่ระบบส่วนกลาง หากตรวจพบ ทีมงานขอสงวนสิทธิ์ในการระงับบัญชีและลบข้อมูลดังกล่าวทันที</p>
                 <br>
-                <h4 style="color: #2c3e50; margin-bottom: 5px;">3. การนำข้อมูลไปใช้งาน</h4>
-                <p>ข้อมูลเบาะแส (เช่น บัญชีม้า, เบอร์โทรศัพท์มิจฉาชีพ, ลิงก์อันตราย) ที่ท่านรายงาน จะถูกเปิดเผยสู่สาธารณะเพื่อให้ผู้ใช้งานท่านอื่นสามารถค้นหาและเฝ้าระวังได้ เพื่อประโยชน์ในการป้องกันภัยอาชญากรรมทางเทคโนโลยีของประเทศ</p>
-                <br>
-                <h4 style="color: #2c3e50; margin-bottom: 5px;">4. ข้อจำกัดความรับผิดชอบ (Disclaimer)</h4>
-                <p>ผลการตรวจสอบไฟล์ในห้องปฏิบัติการ (The Lab) และข้อมูลในฐานข้อมูลชุมชน เป็นการประเมินความเสี่ยงเบื้องต้นเพื่อการเฝ้าระวังเท่านั้น แพลตฟอร์ม 67-AEGIS จะไม่รับผิดชอบต่อความเสียหายใดๆ ที่เกิดขึ้นจากการตัดสินใจหรือการทำธุรกรรมของผู้ใช้งาน</p>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;" data-i18n="terms_h3">3. การนำข้อมูลไปใช้งาน</h4>
+                <p data-i18n="terms_p4">ข้อมูลเบาะแส (เช่น บัญชีม้า, เบอร์โทรศัพท์มิจฉาชีพ, ลิงก์อันตราย) ที่ท่านรายงาน จะถูกเปิดเผยสู่สาธารณะเพื่อให้ผู้ใช้งานท่านอื่นสามารถค้นหาและเฝ้าระวังได้ เพื่อประโยชน์ในการป้องกันภัยอาชญากรรมทางเทคโนโลยีของประเทศ</p>
             </div>
             
             <button id="btnAcceptTerms" class="btn" style="margin-top: 20px; width: 100%; background-color: #27ae60; border: none; padding: 12px; font-size: 1.1rem; cursor: pointer;">
-                <i class="fa-solid fa-check"></i> ฉันเข้าใจและยอมรับเงื่อนไขทั้งหมด
+                <i class="fa-solid fa-check"></i> <span data-i18n="terms_btn_accept">ฉันเข้าใจและยอมรับเงื่อนไขทั้งหมด</span>
             </button>
         </div>
     </div>
+
     <div id="otpModal" class="modal-overlay" style="display: none; z-index: 2000;">
         <div class="modal-content" style="text-align: center; max-width: 400px;">
-            <h2 style="color: #2c3e50; margin-bottom: 10px;"><i class="fa-solid fa-mobile-screen-button" style="color: #3498db;"></i> ยืนยันรหัส OTP</h2>
+            <h2 style="color: #2c3e50; margin-bottom: 10px;"><i class="fa-solid fa-mobile-screen-button" style="color: #3498db;"></i> <span data-i18n="otp_title">ยืนยันรหัส OTP</span></h2>
             <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 20px;">
-                ระบบได้ส่งรหัส 6 หลักไปยังเบอร์ <strong id="otpPhoneDisplay" style="color: #2c3e50;">08X-XXX-XXXX</strong><br>
+                <span data-i18n="otp_desc">ระบบได้ส่งรหัส 6 หลักไปยังเบอร์</span> <strong id="otpPhoneDisplay" style="color: #2c3e50;">08X-XXX-XXXX</strong><br>
             </p>
             
             <div style="margin-bottom: 20px;">
@@ -166,13 +168,15 @@
             </div>
             
             <button id="btnVerifyOtp" class="btn btn-full" style="background-color: #3498db; font-size: 1.1rem;">
-                <i class="fa-solid fa-check-circle"></i> ยืนยันตัวตน
+                <i class="fa-solid fa-check-circle"></i> <span data-i18n="otp_btn_verify">ยืนยันตัวตน</span>
             </button>
-            <button id="btnCancelOtp" style="background: transparent; color: #e74c3c; border: none; margin-top: 15px; cursor: pointer; text-decoration: underline;">
+            <button id="btnCancelOtp" style="background: transparent; color: #e74c3c; border: none; margin-top: 15px; cursor: pointer; text-decoration: underline;" data-i18n="otp_btn_cancel">
                 ยกเลิกการสมัคร
             </button>
         </div>
     </div>
+
+    <script src="language.js"></script>
     <script src="login.js"></script>
 
 </body>
