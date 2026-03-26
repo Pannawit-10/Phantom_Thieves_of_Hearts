@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C-VAFAS | Community News</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">🛡️ C-VAFAS</a>
+        <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> C-VAFAS</a>
         <nav>
             <a href="index.html">Home</a>
             <a href="lab.html">Lab</a>
@@ -20,54 +21,21 @@
     </header>
 
     <section class="page-header bg-yellow">
-        <h1>📰 Community News & Threat Feed</h1>
+        <h1><i class="fa-regular fa-newspaper"></i> Community News & Threat Feed</h1>
         <p>อัปเดตสถานการณ์ภัยไซเบอร์ล่าสุดและสถิติจากเครือข่ายภาคประชาชน</p>
     </section>
 
-    <main class="container news-layout">
-        
-        <section class="news-articles">
-            <h2>ประกาศเตือนภัยล่าสุด</h2>
-            
-            <article class="news-card">
-                <div class="news-meta">📅 วันนี้ | หมวดหมู่: 📱 แอปพลิเคชันอันตราย</div>
-                <h3>ระวัง! พบแอป .apk อ้างตัวเป็นระบบจัดการภาษีประจำปี</h3>
-                <p>ผู้ใช้หลายรายรายงานการพบลิงก์ดาวน์โหลดแอปพลิเคชันปลอมที่ส่งผ่าน SMS โดยอ้างว่ามาจากหน่วยงานรัฐ หากเผลอติดตั้ง ระบบจะทำการขโมยรหัส OTP ทันที...</p>
-                <a href="#" class="read-more">อ่านรายละเอียดการวิเคราะห์ไฟล์ &rarr;</a>
-            </article>
+    <main class="container" style="margin-top: 3rem; margin-bottom: 3rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 2.5rem; color: #2c3e50;">🌐 Community & Cyber News</h1>
+            <p style="color: #7f8c8d;">อัปเดตข่าวสารความปลอดภัยไซเบอร์ระดับโลกแบบ Real-time (Global Threat Intelligence)</p>
+        </div>
 
-            <article class="news-card">
-                <div class="news-meta">📅 เมื่อวานนี้ | หมวดหมู่: 💳 บัญชีม้า</div>
-                <h3>เตือนภัยแก๊งหลอกขายโมเดลของเล่น ระบาดหนักในกลุ่มนักสะสม</h3>
-                <p>พบรูปแบบการโกงใหม่ โดยมิจฉาชีพจะใช้สลิปโอนเงินปลอมแปลงที่ตัดต่อด้วย AI เนียนจนมองด้วยตาเปล่าไม่ออก แนะนำให้ใช้ฟีเจอร์ The Lab ของเราสแกนรูปภาพก่อนส่งของเสมอ...</p>
-                <a href="#" class="read-more">ดูรายชื่อบัญชีดำที่เกี่ยวข้อง &rarr;</a>
-            </article>
-        </section>
-
-        <aside class="news-sidebar">
-            
-            <div class="stat-box">
-                <h3>📊 สถิติ 24 ชม. ที่ผ่านมา</h3>
-                <ul>
-                    <li>🔴 บัญชีม้าถูกรายงาน: <strong id="stat-horse">142</strong> บัญชี</li>
-                    <li>🔴 ไฟล์อันตรายถูกบล็อก: <strong id="stat-file">85</strong> ไฟล์</li>
-                    <li>🟢 ผู้ใช้ยืนยันความปลอดภัย: <strong id="stat-safe">320</strong> ครั้ง</li>
-                </ul>
+        <div id="newsContainer" class="news-grid">
             </div>
-
-            <div class="live-alerts">
-                <h3>🚨 Live Community Alerts</h3>
-                <ul class="alert-list">
-                    <li><strong>[14:15]</strong> เบอร์โทร 098-xxx-xxxx ถูกรายงาน (แก๊งคอลเซ็นเตอร์)</li>
-                    <li><strong>[13:55]</strong> ตรวจพบไฟล์ใบเสร็จปลอม.pdf จากผู้ใช้ในเขตเชียงใหม่</li>
-                    <li><strong>[13:20]</strong> ผู้ใช้ระดับ Gold เพิ่มบัญชี ธ.สีม่วง เข้าสู่ Blacklist</li>
-                    <li><strong>[12:45]</strong> ระบบสกัดกั้นลิงก์หลอกลวงเว็บธนาคารปลอมสำเร็จ</li>
-                </ul>
-            </div>
-
-        </aside>
     </main>
 
+    <script src="auth-check.js"></script>
     <script src="news.js"></script>
 
 </body>

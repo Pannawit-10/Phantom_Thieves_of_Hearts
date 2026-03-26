@@ -33,12 +33,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // ระบบ Data Extraction (ตัดคำอัจฉริยะเหมือนเดิม)
+        // ==========================================
+        // ระบบ Data Extraction (อัปเกรด: รองรับชื่อไฟล์)
+        // ==========================================
         let cleanQuery = rawInput;
-        if (rawInput.includes("http://") || rawInput.includes("https://") || rawInput.includes(".com")) {
+        
+        // 1. เช็กว่าสิ่งที่พิมพ์มา เป็น "ลิงก์" หรือ "ไฟล์ที่มีนามสกุล" (.zip, .apk, .exe, ฯลฯ)
+        // เช็กง่ายๆ ว่ามีจุด (.) และมีตัวอักษรภาษาอังกฤษต่อท้าย
+        if (rawInput.match(/\.[a-zA-Z0-9]{2,4}$/) || rawInput.includes("http://") || rawInput.includes("https://")) {
+            
+            // ตรวจสอบว่าเป็นลิงก์เว็บยาวๆ ไหม ถ้าใช่ให้ตัดเอาแค่โดเมน
             const urlMatch = rawInput.match(/(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+)/);
-            if (urlMatch) cleanQuery = urlMatch[1]; 
+            if (urlMatch && (rawInput.includes("http") || rawInput.includes("www") || rawInput.includes(".com"))) {
+                cleanQuery = urlMatch[1]; 
+            } else {
+                // ถ้าเป็นชื่อไฟล์ (เช่น xxx-yyy.zip) ปล่อยผ่านเลย ห้ามตัดขีดทิ้ง!
+                cleanQuery = rawInput.trim();
+            }
+            
         } else {
+            // 2. ถ้าไม่มีจุด (.) แปลว่าเป็น เบอร์โทร หรือ เลขบัญชี ให้ตัดขีดและช่องว่างทิ้ง
             const onlyNumbers = rawInput.replace(/[-\s]/g, "");
             const numberMatch = onlyNumbers.match(/\d{10,12}/);
             if (numberMatch) {
@@ -47,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 cleanQuery = onlyNumbers;
             }
         }
-
         btnSearch.textContent = "กำลังดึงข้อมูลจากฐานข้อมูล...";
         btnSearch.disabled = true;
 
@@ -152,6 +165,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentSearchValue !== "") {
                 document.getElementById('reportData').value = currentSearchValue;
             }
+            if (!localStorage.getItem('cvafas_user')) {
+            alert("🔒 กรุณาเข้าสู่ระบบเพื่อใช้งานฟีเจอร์รายงานภัยไซเบอร์ครับ");
+            window.location.href = "login.html";
+            return;
+            }
             reportModal.style.display = 'flex';
         });
 
@@ -167,50 +185,68 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // ระบบส่งข้อมูลจริงไปยัง MySQL (ผ่าน API)
+        // ระบบส่งข้อมูลจริงไปยัง MySQL (พร้อมบวกคะแนน)
         reportForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // ป้องกันหน้าเว็บรีเฟรช
+            e.preventDefault();
 
             const submitBtn = reportForm.querySelector('button[type="submit"]');
             submitBtn.textContent = "กำลังอัปโหลดข้อมูลลงฐานข้อมูล...";
             submitBtn.disabled = true;
 
-            // 1. ดึงข้อมูลจากฟอร์ม
             const threatType = document.getElementById('reportType').value;
             const threatData = document.getElementById('reportData').value.trim();
             const behavior = document.getElementById('reportBehavior').value.trim();
 
+            // 🕵️‍♂️ 1. ดึงบัตรประจำตัวจากเครื่อง เพื่อดูว่าใครเป็นคนรีพอร์ต
+            // 🕵️‍♂️ 1. ดึงบัตรประจำตัวจากเครื่อง เพื่อดูว่าใครเป็นคนรีพอร์ต
+            const savedUser = localStorage.getItem('cvafas_user');
+            
+            // 🚨 ระบบตรวจสอบสิทธิ์ (Access Control)
+            if (!savedUser) {
+                alert("🔒 ระบบรักษาความปลอดภัย: กรุณาเข้าสู่ระบบ (Login) ก่อนทำการแจ้งเบาะแสเข้าสู่ส่วนกลางครับ!");
+                window.location.href = "login.html"; // เตะผู้ใช้ไปหน้าล็อกอินทันที
+                return; // สั่งหยุดการทำงานของโค้ดส่วนที่เหลือทั้งหมด!
+            }
+
+            // ถ้ามีบัตรประจำตัว ก็แกะเอา ID ออกมา
+            const userObj = JSON.parse(savedUser);
+            const userId = userObj.id;
+            
             try {
-                // 2. ยิงข้อมูลไปหา Node.js ด้วยวิธี POST
                 const response = await fetch('http://127.0.0.1:3000/api/report', {
-                    method: 'POST', // ระบุว่านี่คือการส่งข้อมูล
-                    headers: {
-                        'Content-Type': 'application/json' // บอกเซิร์ฟเวอร์ว่าส่งไปเป็น JSON
-                    },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         threatType: threatType,
                         threatData: threatData,
-                        behavior: behavior
+                        behavior: behavior,
+                        userId: userId // 📌 แนบ ID ส่งไปให้หลังบ้านด้วย!
                     })
                 });
 
                 const result = await response.json();
 
                 if (response.ok) {
-                    // ถ้าบันทึกสำเร็จ
-                    alert("🎉 ขอบคุณที่ร่วมเป็นส่วนหนึ่งของ C-VAFAS! ข้อมูลของคุณถูกส่งเข้าฐานข้อมูลส่วนกลางแล้ว (คุณได้รับ +50 Trust Score)");
+                    // 🟢 2. ถ้าเซิร์ฟเวอร์ตอบว่าสำเร็จ ให้บวกคะแนนในเครื่องเราด้วย!
+                    if (savedUser) {
+                        let userObj = JSON.parse(savedUser);
+                        userObj.trust_score = (userObj.trust_score || 0) + 50; // บวกเพิ่ม 50 แต้ม
+                        localStorage.setItem('cvafas_user', JSON.stringify(userObj)); // เซฟบัตรใบใหม่ลงเครื่อง
+                    }
+
+                    alert("🎉 ขอบคุณที่ร่วมเป็นส่วนหนึ่งของ C-VAFAS! ข้อมูลถูกส่งเข้าฐานข้อมูลแล้ว (คุณได้รับ +50 Trust Score)");
                     reportModal.style.display = 'none';
                     reportForm.reset();
+                    
+                    // รีเฟรชหน้าต่างเพื่อให้คะแนนบนเมนูบาร์อัปเดตทันที
+                    window.location.reload();
                 } else {
-                    // ถ้าเซิร์ฟเวอร์ฟ้อง Error
                     alert("❌ เกิดข้อผิดพลาด: " + result.error);
                 }
-
             } catch (error) {
                 console.error("Error reporting:", error);
-                alert("❌ ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบว่ารัน 'node server.js' ไว้หรือไม่");
+                alert("❌ ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
             } finally {
-                // คืนค่าปุ่มให้กดใหม่ได้
                 submitBtn.textContent = "ส่งข้อมูลเข้าฐานข้อมูลส่วนกลาง";
                 submitBtn.disabled = false;
             }

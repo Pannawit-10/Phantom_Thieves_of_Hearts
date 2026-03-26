@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C-VAFAS | เข้าสู่ระบบ / สมัครสมาชิก</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* CSS เพิ่มเติมสำหรับซ่อน/โชว์ฟอร์ม */
         .form-hidden { display: none; }
@@ -22,7 +23,7 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">🛡️ C-VAFAS</a>
+        <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> C-VAFAS</a>
         <nav>
             <a href="index.html">Home</a>
             <a href="lab.html">Lab</a>
@@ -38,10 +39,10 @@
             <h2>ร่วมเป็น "พลเมืองดีไซเบอร์"</h2>
             <p>ระบบ C-VAFAS ขับเคลื่อนด้วยข้อมูลจากชุมชน การสมัครสมาชิกจะช่วยให้คุณสามารถ:</p>
             <ul class="benefit-list">
-                <li>✅ แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</li>
-                <li>✅ สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</li>
-                <li>✅ ติดตามสถานะเคสที่คุณเคยกดรีพอร์ตเอาไว้</li>
-                <li>✅ เข้าถึงประวัติการสแกนไฟล์ย้อนหลัง (The Lab)</li>
+                <li><i class="fa-solid fa-circle-check"></i> แจ้งเบาะแสบัญชีม้าและลิงก์อันตรายเข้าสู่ระบบส่วนกลาง</li>
+                <li><i class="fa-solid fa-circle-check"></i> สะสม Trust Score เพื่อยืนยันความน่าเชื่อถือของคุณ</li>
+                <li><i class="fa-solid fa-circle-check"></i> ติดตามสถานะเคสที่คุณเคยกดรีพอร์ตเอาไว้</li>
+                <li><i class="fa-solid fa-circle-check"></i> เข้าถึงประวัติการสแกนไฟล์ย้อนหลัง (The Lab)</li>
             </ul>
         </div>
 
@@ -83,7 +84,8 @@
                 </div>
                 <div class="form-actions" style="margin-bottom: 1.5rem;">
                     <label style="color: #7f8c8d; font-size: 0.9rem;">
-                        <input type="checkbox" required> ฉันยอมรับข้อตกลงและนโยบายความเป็นส่วนตัว
+                        <input type="checkbox" id="regTermsCheckbox" required> ฉันยอมรับ 
+                        <a href="#" id="linkTerms" style="color: #3498db; text-decoration: underline;">ข้อตกลงและนโยบายความเป็นส่วนตัว</a>
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-full" style="background-color: #27ae60;">สมัครสมาชิกและเริ่มใช้งาน</button>
@@ -105,62 +107,36 @@
         </div>
 
     </main>
-
-    <script>
-        const btnShowLogin = document.getElementById('btnShowLogin');
-        const btnShowRegister = document.getElementById('btnShowRegister');
-        const toggleHeader = document.getElementById('formToggleHeader');
-        
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const forgotForm = document.getElementById('forgotForm');
-        
-        const linkForgotPassword = document.getElementById('linkForgotPassword');
-        const linkBackToLogin = document.getElementById('linkBackToLogin');
-
-        // ฟังก์ชันช่วยซ่อนฟอร์มทั้งหมดก่อนโชว์อันที่ต้องการ
-        function hideAllForms() {
-            loginForm.classList.add('form-hidden');
-            registerForm.classList.add('form-hidden');
-            forgotForm.classList.add('form-hidden');
-        }
-
-        // 1. กดปุ่ม "สร้างบัญชีใหม่"
-        btnShowRegister.addEventListener('click', function() {
-            btnShowLogin.classList.remove('active');
-            btnShowRegister.classList.add('active');
-            hideAllForms();
-            registerForm.classList.remove('form-hidden');
-        });
-
-        // 2. กดปุ่ม "เข้าสู่ระบบ"
-        btnShowLogin.addEventListener('click', function() {
-            btnShowRegister.classList.remove('active');
-            btnShowLogin.classList.add('active');
-            hideAllForms();
-            loginForm.classList.remove('form-hidden');
-        });
-
-        // 3. กดลิงก์ "ลืมรหัสผ่าน?"
-        linkForgotPassword.addEventListener('click', function(e) {
-            e.preventDefault(); // ป้องกันไม่ให้หน้าเว็บกระตุกเลื่อนขึ้นบน
-            hideAllForms();
-            toggleHeader.classList.add('form-hidden'); // ซ่อนปุ่มสลับ Login/Register ด้านบน
-            forgotForm.classList.remove('form-hidden'); // โชว์ฟอร์มลืมรหัสผ่าน
-        });
-
-        // 4. กดลิงก์ "กลับไปหน้าเข้าสู่ระบบ"
-        linkBackToLogin.addEventListener('click', function(e) {
-            e.preventDefault();
-            hideAllForms();
-            toggleHeader.classList.remove('form-hidden'); // โชว์ปุ่มสลับด้านบนกลับมา
-            loginForm.classList.remove('form-hidden'); // โชว์ฟอร์ม Login
+    <div id="termsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 650px; max-height: 85vh; display: flex; flex-direction: column;">
+            <span class="close-modal" id="closeTerms"><i class="fa-solid fa-xmark"></i></span>
             
-            // รีเซ็ตปุ่ม Active ให้ชี้ไปที่ Login
-            btnShowRegister.classList.remove('active');
-            btnShowLogin.classList.add('active');
-        });
-    </script>
+            <h2 style="color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 15px; margin-bottom: 15px;">
+                <i class="fa-solid fa-file-shield" style="color: #3498db;"></i> ข้อตกลงและนโยบายความเป็นส่วนตัว (Privacy Policy)
+            </h2>
+            
+            <div style="overflow-y: auto; padding-right: 15px; color: #555; font-size: 0.95rem; line-height: 1.6; text-align: left;">
+                <p>ยินดีต้อนรับสู่ <strong>C-VAFAS (Cyber-Vulnerability Assessment & Forensic Alert System)</strong> แพลตฟอร์มส่วนกลางสำหรับการตรวจสอบและรายงานภัยคุกคามทางไซเบอร์</p>
+                <br>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;">1. การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
+                <p>ระบบจะทำการจัดเก็บข้อมูลพื้นฐานของท่าน ได้แก่ ชื่อ (หรือนามแฝง) และอีเมล เพื่อใช้ในการยืนยันตัวตนและสะสมคะแนนความน่าเชื่อถือ (Trust Score) รหัสผ่านของท่านจะถูกเข้ารหัสขั้นสูง (Hashing) ตามมาตรฐานสากลและไม่สามารถอ่านกลับเป็นข้อความปกติได้</p>
+                <br>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;">2. นโยบายการรายงานเบาะแส (Crowdsourcing Policy)</h4>
+                <p>ผู้ใช้งานตกลงที่จะรายงานข้อมูลที่เป็นความจริงและเกิดจากการพบเห็นภัยคุกคามด้วยตนเอง <strong>ห้ามมิให้</strong> ผู้ใช้งานใช้ระบบนี้ในการกลั่นแกล้ง ใส่ร้าย หรือส่งข้อมูลอันเป็นเท็จเข้าสู่ระบบส่วนกลาง หากตรวจพบ ทีมงานขอสงวนสิทธิ์ในการระงับบัญชีและลบข้อมูลดังกล่าวทันที</p>
+                <br>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;">3. การนำข้อมูลไปใช้งาน</h4>
+                <p>ข้อมูลเบาะแส (เช่น บัญชีม้า, เบอร์โทรศัพท์มิจฉาชีพ, ลิงก์อันตราย) ที่ท่านรายงาน จะถูกเปิดเผยสู่สาธารณะเพื่อให้ผู้ใช้งานท่านอื่นสามารถค้นหาและเฝ้าระวังได้ เพื่อประโยชน์ในการป้องกันภัยอาชญากรรมทางเทคโนโลยีของประเทศ</p>
+                <br>
+                <h4 style="color: #2c3e50; margin-bottom: 5px;">4. ข้อจำกัดความรับผิดชอบ (Disclaimer)</h4>
+                <p>ผลการตรวจสอบไฟล์ในห้องปฏิบัติการ (The Lab) และข้อมูลในฐานข้อมูลชุมชน เป็นการประเมินความเสี่ยงเบื้องต้นเพื่อการเฝ้าระวังเท่านั้น แพลตฟอร์ม C-VAFAS จะไม่รับผิดชอบต่อความเสียหายใดๆ ที่เกิดขึ้นจากการตัดสินใจหรือการทำธุรกรรมของผู้ใช้งาน</p>
+            </div>
+            
+            <button id="btnAcceptTerms" class="btn" style="margin-top: 20px; width: 100%; background-color: #27ae60; border: none; padding: 12px; font-size: 1.1rem; cursor: pointer;">
+                <i class="fa-solid fa-check"></i> ฉันเข้าใจและยอมรับเงื่อนไขทั้งหมด
+            </button>
+        </div>
+    </div>
+    <script src="login.js"></script>
 
 </body>
 </html>

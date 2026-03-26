@@ -1,46 +1,48 @@
-// รอให้โครงสร้าง HTML โหลดเสร็จก่อนแล้วค่อยให้ JavaScript ทำงาน
 document.addEventListener('DOMContentLoaded', function() {
     console.log("C-VAFAS: Home module loaded.");
 
     // ==========================================
-    // 1. ระบบจำลองสถิติแบบ Real-time (Live Stats)
+    // 1. 📊 ระบบสถิติแบบ Real-time (ดึงจาก MySQL จริง!)
     // ==========================================
-    // กำหนดตัวเลขเริ่มต้น
-    let blacklistCount = 15420;
-    let blockedFilesCount = 342;
-
-    // หาตำแหน่ง (Element) บนหน้าเว็บที่จะเอาตัวเลขไปแสดง
-    // หมายเหตุ: ต้องตรวจสอบว่าใน index.html ของคุณมี id="stat-blacklist" และ id="stat-files" อยู่ในแถบ Header นะครับ
     const statBlacklist = document.getElementById('stat-blacklist');
     const statFiles = document.getElementById('stat-files');
 
-    // ถ้าหา Elements เจอ ให้เริ่มจำลองการอัปเดตข้อมูล
-    if (statBlacklist && statFiles) {
-        // ใช้ setInterval ทำงานซ้ำๆ ทุกๆ 3.5 วินาที
-        setInterval(() => {
-            // สุ่มโอกาสเกิดเหตุการณ์ (ให้ตัวเลขดูขยับแบบเป็นธรรมชาติ ไม่ได้ขึ้นพร้อมกันเป๊ะๆ)
-            const randomEvent = Math.random();
+    // ฟังก์ชันดึงข้อมูลจากหลังบ้าน
+    async function fetchRealStats() {
+        try {
+            const response = await fetch('http://127.0.0.1:3000/api/stats');
+            const data = await response.json();
 
-            if (randomEvent > 0.6) {
-                // มีคนรายงานบัญชีดำเพิ่ม 1-3 บัญชี
-                blacklistCount += Math.floor(Math.random() * 3) + 1;
-                statBlacklist.innerText = `บัญชีดำ: ${blacklistCount.toLocaleString()}`;
+            if (data.success && statBlacklist) {
+                // เอาตัวเลขจริงจากฐานข้อมูลมาแสดง + ใส่ลูกน้ำ (comma) ให้สวยงาม
+                statBlacklist.innerText = `ฐานข้อมูลมิจฉาชีพ: ${data.total_blacklist.toLocaleString()} รายการ`;
                 
-                // ใส่เอฟเฟกต์กระพริบสีแดงเล็กน้อยเวลามีข้อมูลอัปเดต
+                // ใส่เอฟเฟกต์กระพริบเวลามีการอัปเดตข้อมูลใหม่ๆ
                 statBlacklist.style.color = '#e74c3c';
                 setTimeout(() => statBlacklist.style.color = '', 500);
             }
+        } catch (error) {
+            console.log("C-VAFAS: ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์สถิติได้");
+        }
+    }
 
-            if (randomEvent > 0.8) {
-                // มีไฟล์อันตรายถูกสกัดกั้นเพิ่ม 1 ไฟล์
+    // 1. ดึงข้อมูลทันทีที่เปิดหน้าเว็บ
+    fetchRealStats();
+
+    // 2. ตั้งเวลาให้ดึงข้อมูลอัปเดตใหม่ทุกๆ 10 วินาที (Real-time Sync)
+    setInterval(fetchRealStats, 10000); 
+
+    // (ส่วนของ statFiles ถ้ายังไม่มีตารางเก็บในฐานข้อมูล สามารถใช้โค้ดจำลองที่คุณเขียนไว้ก่อนได้ครับ)
+    if (statFiles) {
+        let blockedFilesCount = 342;
+        setInterval(() => {
+            if (Math.random() > 0.7) {
                 blockedFilesCount += 1;
-                statFiles.innerText = `สกัดไฟล์: ${blockedFilesCount.toLocaleString()}`;
-                
-                // ใส่เอฟเฟกต์กระพริบสีเขียวเล็กน้อย
+                statFiles.innerText = `สกัดไฟล์อันตราย: ${blockedFilesCount.toLocaleString()} ครั้ง`;
                 statFiles.style.color = '#27ae60';
                 setTimeout(() => statFiles.style.color = '', 500);
             }
-        }, 3500); // 3500 มิลลิวินาที (3.5 วินาที)
+        }, 3500);
     }
 
     // ==========================================
@@ -50,17 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     cards.forEach(card => {
         card.addEventListener('click', function(e) {
-            // ถ้าคลิกโดนปุ่ม <a> ข้างใน ให้ข้ามไป ไม่ต้องทำเอฟเฟกต์ซ้ำซ้อน
             if(e.target.tagName.toLowerCase() === 'a') return;
-
-            // ค้นหาลิงก์ที่อยู่ในการ์ดใบนั้น แล้วสั่งให้ทำงาน (ช่วยให้คลิกตรงไหนของการ์ดก็ไปหน้าต่อไปได้)
             const link = this.querySelector('a.btn');
             if (link) {
                 window.location.href = link.href;
             }
         });
-
-        // เปลี่ยนเมาส์เป็นรูปนิ้วชี้ เพื่อให้รู้ว่าทั้งกล่องกดได้
         card.style.cursor = 'pointer';
     });
 });

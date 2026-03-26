@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C-VAFAS | The Lab - ชันสูตรไฟล์</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">🛡️ C-VAFAS</a>
+        <a href="index.html" class="logo"><i class="fa-solid fa-shield-halved"></i> C-VAFAS</a>
         <nav>
             <a href="index.html">Home</a>
             <a href="lab.html" style="color: #3498db; font-weight: bold;">Lab</a>
@@ -42,7 +43,7 @@
 
         <div class="analysis-result" id="resultCard">
             <div class="result-header">
-                <h3>📑 รายงานผลการชันสูตร (Forensic Report)</h3>
+                <h3>📑 รายงานผลการตรวจสอบ (Forensic Report)</h3>
                 <span class="badge badge-danger">ตรวจพบความเสี่ยงสูง</span>
             </div>
             
@@ -66,14 +67,15 @@
             </div>
 
             <div class="result-footer">
-                <p><strong>⚠️ คำแนะนำจากระบบ:</strong> ไฟล์นี้มีการปลอมแปลงนามสกุลเพื่อหลอกให้ผู้ใช้ติดตั้งแอปพลิเคชันอันตราย (แอปดูดเงิน) ห้ามกดเปิดหรือติดตั้งไฟล์นี้ลงในเครื่องเด็ดขาด!</p>
-                <button class="btn btn-red">รายงานไฟล์นี้ลงฐานข้อมูลชุมชน</button>
+                <p><strong><i class="fa-solid fa-circle-exclamation"></i> คำแนะนำจากระบบ:</strong> ไฟล์นี้มีการปลอมแปลงนามสกุลเพื่อหลอกให้ผู้ใช้ติดตั้งแอปพลิเคชันอันตราย (แอปดูดเงิน) ห้ามกดเปิดหรือติดตั้งไฟล์นี้ลงในเครื่องเด็ดขาด!</p>
+                <button id="btnReportFile" class="btn" style="background-color: #e74c3c; color: white; width: 100%;">รายงานไฟล์นี้ลงฐานข้อมูลชุมชน</button>
             </div>
         </div>
 
     </main>
 
     <script src="lab.js"></script>
+    <script src="auth-check.js"></script>
 
 </body>
 </html>
